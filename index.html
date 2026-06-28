@@ -3,27 +3,42 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>GitHub Pages 部署完全指南 - 交互式教程</title>
+  <title>HTML 标签与嵌套 — 交互式记忆库</title>
   <style>
-    /* === CSS 变量与全局重置 === */
+    /* === CSS 变量：柔和的学习调色板 === */
     :root {
-      --bg: #f8fafc;
-      --card-bg: #ffffff;
-      --text: #1e293b;
-      --muted: #64748b;
-      --accent: #2563eb;
-      --accent-light: #dbeafe;
-      --success: #10b981;
-      --success-bg: #d1fae5;
-      --error: #ef4444;
-      --error-bg: #fee2e2;
-      --warning: #f59e0b;
-      --warning-bg: #fef3c7;
-      --info: #0ea5e9;
-      --info-bg: #e0f2fe;
-      --radius: 12px;
-      --shadow: 0 4px 6px -1px rgba(0,0,0,0.1), 0 2px 4px -2px rgba(0,0,0,0.1);
-      --shadow-hover: 0 10px 15px -3px rgba(0,0,0,0.1), 0 4px 6px -4px rgba(0,0,0,0.1);
+      --ivory:   #FAF9F5;
+      --paper:   #FFFFFF;
+      --slate:   #141413;
+      --clay:    #D97757;
+      --clay-d:  #B85C3E;
+      --oat:     #E3DACC;
+      --olive:   #788C5D;
+      --sky:     #2563EB;
+      --sky-l:   #DBEAFE;
+
+      --g100: #F0EEE6;
+      --g200: #E6E3DA;
+      --g300: #D1CFC5;
+      --g500: #87867F;
+      --g700: #3D3D3A;
+
+      --success: #10B981;
+      --success-bg: #D1FAE5;
+      --error: #EF4444;
+      --error-bg: #FEE2E2;
+      --warning: #F59E0B;
+      --warning-bg: #FEF3C7;
+
+      --radius: 14px;
+      --radius-sm: 10px;
+      --shadow: 0 4px 14px rgba(20,20,19,0.06);
+      --shadow-hover: 0 10px 30px rgba(20,20,19,0.10);
+      --shadow-strong: 0 12px 40px rgba(20,20,19,0.14);
+
+      --serif: ui-serif, Georgia, "Times New Roman", Times, serif;
+      --sans: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      --mono: ui-monospace, "SF Mono", Menlo, Monaco, Consolas, monospace;
     }
 
     * { box-sizing: border-box; }
@@ -32,539 +47,825 @@
 
     body {
       margin: 0;
-      font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-      background: var(--bg);
-      color: var(--text);
+      font-family: var(--sans);
+      background: var(--ivory);
+      color: var(--slate);
       line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
     }
 
     /* === 进度条 === */
     .progress-container {
       position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 4px;
-      background: #e2e8f0;
+      top: 0; left: 0;
+      width: 100%; height: 4px;
+      background: var(--g200);
       z-index: 1000;
     }
-
     .progress-bar {
       height: 100%;
       width: 0%;
-      background: linear-gradient(90deg, var(--accent), #7c3aed);
-      transition: width 0.2s ease;
+      background: linear-gradient(90deg, var(--clay), var(--olive));
+      transition: width 0.25s ease;
     }
 
-    .container {
-      max-width: 960px;
+    /* === 布局容器 === */
+    .wrap {
+      max-width: 1080px;
       margin: 0 auto;
-      padding: 0 1.5rem;
+      padding: 0 24px 120px;
     }
+    @media (max-width: 640px) { .wrap { padding: 0 16px 80px; } }
 
-    header {
-      padding: 4rem 0 2rem;
-      text-align: center;
+    /* === 头部 === */
+    header.masthead {
+      padding: 72px 0 40px;
+      border-bottom: 1.5px solid var(--g300);
     }
-
-    header h1 {
-      font-size: clamp(2rem, 5vw, 3rem);
-      margin: 0 0 0.75rem;
-      letter-spacing: -0.02em;
-    }
-
-    header p {
-      color: var(--muted);
-      font-size: 1.125rem;
-      max-width: 680px;
-      margin: 0 auto 1.25rem;
-    }
-
-    .result-link {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.5rem;
-      padding: 0.625rem 1.25rem;
-      background: var(--accent-light);
-      color: var(--accent);
-      border-radius: 999px;
-      text-decoration: none;
-      font-weight: 600;
-      transition: background 0.15s;
-    }
-
-    .result-link:hover { background: #bfdbfe; }
-
-    main { padding-bottom: 4rem; }
-
-    section { margin-bottom: 2.5rem; }
-
-    .section-title {
-      font-size: 1.5rem;
-      margin: 0 0 1rem;
+    .eyebrow {
+      font-family: var(--mono);
+      font-size: 12px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--g500);
+      margin-bottom: 14px;
       display: flex;
       align-items: center;
-      gap: 0.5rem;
+      gap: 12px;
+    }
+    .eyebrow::before {
+      content: "";
+      width: 24px; height: 1.5px;
+      background: var(--clay);
+    }
+    h1 {
+      font-family: var(--serif);
+      font-weight: 500;
+      font-size: clamp(2.2rem, 5.5vw, 3.6rem);
+      line-height: 1.08;
+      letter-spacing: -0.02em;
+      margin: 0 0 10px;
+      max-width: 18ch;
+    }
+    h1 em {
+      font-style: italic;
+      color: var(--clay);
+    }
+    .intro {
+      font-size: 17px;
+      color: var(--g700);
+      margin: 18px 0 0;
+      max-width: 640px;
     }
 
-    .section-title .icon {
-      width: 32px;
-      height: 32px;
-      background: var(--accent-light);
-      color: var(--accent);
-      border-radius: 8px;
+    /* TL;DR 摘要框 */
+    .tldr {
+      margin-top: 28px;
+      padding: 18px 22px;
+      background: var(--paper);
+      border: 1.5px solid var(--g300);
+      border-left: 4px solid var(--clay);
+      border-radius: var(--radius-sm);
+      box-shadow: var(--shadow);
+      font-size: 15.5px;
+      color: var(--g700);
+      max-width: 720px;
+    }
+    .tldr strong { color: var(--slate); }
+
+    /* TOC 胶囊导航 */
+    .toc {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 26px;
+      padding-top: 4px;
+    }
+    .toc a {
+      font-size: 13px;
+      padding: 7px 14px;
+      border: 1.5px solid var(--g300);
+      border-radius: 999px;
+      text-decoration: none;
+      color: var(--g700);
+      background: var(--paper);
+      transition: border-color 120ms, color 120ms, background 120ms;
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+    }
+    .toc a .n {
+      font-family: var(--mono);
+      font-size: 10px;
+      color: var(--g500);
+    }
+    .toc a:hover,
+    .toc a.active {
+      border-color: var(--slate);
+      color: var(--slate);
+    }
+    .toc a:hover .n,
+    .toc a.active .n { color: var(--clay); }
+
+    /* 学习路径折叠面板 */
+    .learning-path {
+      margin-top: 22px;
+      max-width: 720px;
+    }
+    .collapsible {
+      border: 1.5px solid var(--g300);
+      border-radius: var(--radius-sm);
+      background: var(--paper);
+      overflow: hidden;
+    }
+    .collapsible-header {
+      width: 100%;
+      padding: 12px 16px;
+      background: transparent;
+      border: none;
+      text-align: left;
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--slate);
+      cursor: pointer;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .collapsible-header:hover { background: var(--g100); }
+    .collapsible-icon {
+      transition: transform 0.2s;
+      color: var(--g500);
+    }
+    .collapsible.open .collapsible-icon { transform: rotate(180deg); }
+    .collapsible-body {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.25s ease;
+    }
+    .collapsible.open .collapsible-body { max-height: 500px; }
+    .collapsible-inner {
+      padding: 0 16px 16px;
+    }
+    .path-steps {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px 0;
+      margin-top: 4px;
+    }
+    .path-step {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 13px;
+      color: var(--g700);
+    }
+    .path-step .dot {
+      width: 22px; height: 22px;
+      border-radius: 50%;
+      background: var(--g200);
+      color: var(--g700);
+      font-family: var(--mono);
+      font-size: 11px;
       display: grid;
       place-items: center;
-      font-size: 1rem;
+      flex-shrink: 0;
+    }
+    .path-step:not(:last-child)::after {
+      content: "→";
+      color: var(--g500);
+      margin-left: 8px;
     }
 
+    /* === 章节 === */
+    section {
+      margin-top: 72px;
+      scroll-margin-top: 24px;
+    }
+    .sec-head {
+      display: flex;
+      align-items: baseline;
+      gap: 14px;
+      margin-bottom: 10px;
+    }
+    .sec-head .idx {
+      font-family: var(--mono);
+      font-size: 13px;
+      color: var(--clay);
+      font-weight: 600;
+      width: 34px;
+      flex-shrink: 0;
+    }
+    .sec-head h2 {
+      font-family: var(--serif);
+      font-weight: 500;
+      font-size: 27px;
+      margin: 0;
+      letter-spacing: -0.012em;
+    }
+    .sec-head .count {
+      font-family: var(--mono);
+      font-size: 11px;
+      color: var(--g500);
+      background: var(--g100);
+      padding: 2px 8px;
+      border-radius: 999px;
+    }
+    .sec-intro {
+      font-size: 15px;
+      color: var(--g700);
+      max-width: 680px;
+      margin: 0 0 22px 48px;
+    }
+    @media (max-width: 640px) { .sec-intro { margin-left: 0; } }
+
+    /* === 卡片 === */
     .card {
-      background: var(--card-bg);
+      background: var(--paper);
+      border: 1.5px solid var(--g300);
       border-radius: var(--radius);
       box-shadow: var(--shadow);
       padding: 1.5rem;
-      transition: transform 0.2s, box-shadow 0.2s;
     }
-
     .card:hover { box-shadow: var(--shadow-hover); }
 
-    /* === 提示框 === */
-    .tip-box {
-      padding: 1rem 1.25rem;
-      border-radius: 8px;
-      border-left: 4px solid;
-      margin-bottom: 1rem;
+    /* === 标签速览 === */
+    .tag-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+      gap: 16px;
+      margin-left: 48px;
     }
+    @media (max-width: 640px) { .tag-grid { margin-left: 0; } }
 
-    .tip-box.info {
-      background: var(--info-bg);
-      border-color: var(--info);
-    }
-
-    .tip-box.warning {
-      background: var(--warning-bg);
-      border-color: var(--warning);
-    }
-
-    .tip-box.success {
-      background: var(--success-bg);
-      border-color: var(--success);
-    }
-
-    .tip-box.error {
-      background: var(--error-bg);
-      border-color: var(--error);
-    }
-
-    /* === 时间线 === */
-    .timeline {
-      position: relative;
-      padding-left: 2rem;
-    }
-
-    .timeline::before {
-      content: '';
-      position: absolute;
-      left: 15px;
-      top: 8px;
-      bottom: 8px;
-      width: 2px;
-      background: #e2e8f0;
-    }
-
-    .step-card {
-      position: relative;
-      background: var(--card-bg);
-      border: 2px solid #e2e8f0;
-      border-radius: var(--radius);
-      padding: 1.25rem;
-      margin-bottom: 1rem;
+    .tag-card {
+      background: var(--paper);
+      border: 1.5px solid var(--g300);
+      border-radius: var(--radius-sm);
+      padding: 18px 14px;
+      text-align: center;
       cursor: pointer;
-      transition: all 0.2s;
+      transition: transform 150ms ease, box-shadow 150ms ease, border-color 150ms ease;
+      position: relative;
     }
-
-    .step-card:hover {
-      border-color: var(--accent);
-      transform: translateX(4px);
-    }
-
-    .step-card.active {
-      border-color: var(--accent);
+    .tag-card:hover {
+      border-color: var(--slate);
+      transform: translateY(-3px);
       box-shadow: var(--shadow-hover);
     }
-
-    .step-card::before {
-      content: attr(data-step);
+    .tag-card.active {
+      border-color: var(--clay);
+      box-shadow: 0 0 0 2px rgba(217,119,87,0.15);
+    }
+    .tag-card .badge {
       position: absolute;
-      left: -2.5rem;
-      top: 1.25rem;
-      width: 32px;
-      height: 32px;
-      background: var(--accent);
-      color: white;
-      border-radius: 50%;
-      display: grid;
-      place-items: center;
+      top: 10px; right: 10px;
+      font-size: 10px;
+      padding: 2px 7px;
+      border-radius: 999px;
+      font-weight: 600;
+      letter-spacing: 0.02em;
+    }
+    .badge.block { background: #E0E7FF; color: #3730A3; }
+    .badge.inline { background: #D1FAE5; color: #065F46; }
+    .badge.media { background: #FEF3C7; color: #92400E; }
+    .badge.container { background: #F3E8FF; color: #6B21A8; }
+
+    .tag-card .tag-name {
+      font-family: var(--mono);
+      font-size: 1.35rem;
       font-weight: 700;
-      font-size: 0.875rem;
-      z-index: 1;
+      color: var(--slate);
+      margin-bottom: 4px;
+    }
+    .tag-card .tag-desc {
+      font-size: 13px;
+      color: var(--g500);
     }
 
-    .step-card.completed::before {
-      background: var(--success);
-      content: '✓';
-    }
-
-    .step-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-
-    .step-title {
-      font-weight: 700;
-      font-size: 1.05rem;
-      margin: 0;
-    }
-
-    .step-summary {
-      color: var(--muted);
-      font-size: 0.875rem;
-      margin: 0.25rem 0 0;
-    }
-
-    .step-icon {
-      color: var(--muted);
-      transition: transform 0.2s;
-    }
-
-    .step-card.active .step-icon {
-      transform: rotate(180deg);
-    }
-
-    .step-body {
+    .tag-detail {
       display: none;
-      margin-top: 1rem;
-      padding-top: 1rem;
-      border-top: 1px solid #e2e8f0;
+      margin: 18px 0 0 48px;
+      padding: 20px;
+      background: var(--paper);
+      border: 1.5px solid var(--g300);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
     }
+    @media (max-width: 640px) { .tag-detail { margin-left: 0; } }
+    .tag-detail.show { display: block; animation: fadeIn 0.3s ease; }
 
-    .step-card.active .step-body {
-      display: block;
-      animation: fadeIn 0.3s ease;
+    .tab-bar {
+      display: flex;
+      gap: 6px;
+      border-bottom: 1.5px solid var(--g200);
+      margin-bottom: 16px;
     }
-
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(-10px); }
-      to { opacity: 1; transform: translateY(0); }
+    .tab-btn {
+      padding: 8px 14px;
+      background: transparent;
+      border: none;
+      border-bottom: 2px solid transparent;
+      font-size: 13.5px;
+      font-weight: 600;
+      color: var(--g500);
+      cursor: pointer;
+      transition: color 120ms, border-color 120ms;
     }
+    .tab-btn:hover { color: var(--slate); }
+    .tab-btn.active {
+      color: var(--clay);
+      border-bottom-color: var(--clay);
+    }
+    .tab-panel { display: none; }
+    .tab-panel.active { display: block; animation: fadeIn 0.25s ease; }
 
-    /* === 命令块 === */
-    .command-block {
-      position: relative;
-      background: #0f172a;
+    .code-block {
+      background: #0F172A;
+      color: #E2E8F0;
+      padding: 14px;
       border-radius: 8px;
-      margin: 0.75rem 0;
-      overflow: hidden;
+      font-family: var(--mono);
+      font-size: 13.5px;
+      line-height: 1.55;
+      overflow-x: auto;
+      white-space: pre;
+    }
+    .code-block .tag { color: #93C5FD; }
+    .code-block .attr { color: #A5B4FC; }
+    .code-block .val { color: #86EFAC; }
+    .code-block .comment { color: #64748B; }
+
+    .render-box {
+      padding: 14px;
+      background: var(--ivory);
+      border: 1.5px solid var(--g300);
+      border-radius: 8px;
+      min-height: 80px;
     }
 
-    .command-header {
+    .svg-diagram {
+      width: 100%;
+      max-width: 320px;
+      height: auto;
+      margin-top: 10px;
+    }
+
+    /* === 嵌套实验室 === */
+    .playground {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 18px;
+      min-height: 340px;
+    }
+    @media (max-width: 768px) { .playground { grid-template-columns: 1fr; } }
+
+    .editor-pane, .preview-pane { display: flex; flex-direction: column; }
+    .pane-label {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--g500);
+      margin-bottom: 8px;
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding: 0.5rem 0.75rem;
-      background: #1e293b;
-      border-bottom: 1px solid #334155;
+      flex-wrap: wrap;
+      gap: 8px;
     }
-
-    .command-label {
-      font-size: 0.75rem;
-      color: #94a3b8;
-      text-transform: uppercase;
-      letter-spacing: 0.05em;
+    .toolbar {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      align-items: center;
     }
-
-    .command-block pre {
-      margin: 0;
-      padding: 1rem;
-      color: #e2e8f0;
-      font-family: "SF Mono", Monaco, monospace;
-      font-size: 0.875rem;
-      line-height: 1.6;
-      overflow-x: auto;
-      white-space: pre-wrap;
-      word-break: break-word;
-    }
-
-    .command-block code {
-      font-family: "SF Mono", Monaco, monospace;
-    }
-
-    .copy-btn {
-      padding: 0.25rem 0.625rem;
-      border: none;
+    .toolbar select {
+      font-size: 12px;
+      padding: 4px 8px;
+      border: 1.5px solid var(--g300);
       border-radius: 6px;
-      background: #334155;
-      color: #e2e8f0;
-      font-size: 0.75rem;
+      background: var(--paper);
+      color: var(--slate);
       cursor: pointer;
-      transition: background 0.15s;
+    }
+    .toolbar .tool-btn {
+      font-family: var(--mono);
+      font-size: 11px;
+      padding: 4px 8px;
+      border: 1.5px solid var(--g300);
+      border-radius: 6px;
+      background: var(--paper);
+      color: var(--slate);
+      cursor: pointer;
+      transition: border-color 120ms, background 120ms;
+    }
+    .toolbar .tool-btn:hover { border-color: var(--clay); background: var(--oat); }
+
+    .editor-pane textarea {
+      flex: 1;
+      width: 100%;
+      min-height: 280px;
+      padding: 14px;
+      border: 1.5px solid var(--g300);
+      border-radius: 10px;
+      font-family: var(--mono);
+      font-size: 13.5px;
+      line-height: 1.55;
+      resize: vertical;
+      background: #0F172A;
+      color: #E2E8F0;
     }
 
-    .copy-btn:hover { background: #475569; }
-
-    .copy-btn.copied {
-      background: var(--success);
-      color: white;
+    .preview-pane .preview-box {
+      flex: 1;
+      min-height: 280px;
+      padding: 14px;
+      border: 1.5px solid var(--g300);
+      border-radius: 10px;
+      background: var(--paper);
+      overflow: auto;
     }
 
-    /* === 按钮 === */
+    .status-badge {
+      font-size: 12px;
+      font-weight: 600;
+      padding: 4px 10px;
+      border-radius: 999px;
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+    }
+    .status-badge.ok { background: var(--success-bg); color: #065F46; }
+    .status-badge.warn { background: var(--warning-bg); color: #92400E; }
+    .status-badge.err { background: var(--error-bg); color: #991B1B; }
+
     .btn {
-      padding: 0.5rem 1rem;
+      padding: 8px 14px;
       border: none;
       border-radius: 8px;
-      background: var(--accent);
-      color: white;
-      font-size: 0.875rem;
+      background: var(--slate);
+      color: var(--paper);
+      font-size: 13px;
       font-weight: 500;
       cursor: pointer;
       transition: background 0.15s, transform 0.1s;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
     }
-
-    .btn:hover { background: #1d4ed8; }
-
+    .btn:hover { background: var(--clay); }
     .btn:active { transform: scale(0.98); }
-
     .btn.secondary {
-      background: #e2e8f0;
-      color: var(--text);
+      background: var(--g200);
+      color: var(--slate);
     }
+    .btn.secondary:hover { background: var(--g300); }
+    .btn.small { padding: 5px 10px; font-size: 12px; }
 
-    .btn.secondary:hover { background: #cbd5e1; }
-
-    .btn.small { padding: 0.375rem 0.75rem; font-size: 0.8125rem; }
-
-    /* === 命令速查表 === */
-    .command-grid {
+    /* === 常见错误 === */
+    .mistake-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-      gap: 1rem;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 18px;
+      margin-left: 48px;
     }
+    @media (max-width: 640px) { .mistake-grid { margin-left: 0; } }
 
-    .command-card {
-      background: var(--card-bg);
-      border: 1px solid #e2e8f0;
+    .mistake-card {
+      background: var(--paper);
+      border: 1.5px solid var(--g300);
       border-radius: var(--radius);
-      padding: 1rem;
-      transition: all 0.2s;
+      padding: 18px;
+      box-shadow: var(--shadow);
+      transition: transform 150ms ease, box-shadow 150ms ease;
     }
+    .mistake-card:hover { transform: translateY(-2px); box-shadow: var(--shadow-hover); }
 
-    .command-card:hover {
-      border-color: var(--accent);
-      transform: translateY(-2px);
-      box-shadow: var(--shadow-hover);
-    }
-
-    .command-card code {
-      display: block;
-      padding: 0.5rem;
-      background: #0f172a;
-      color: #e2e8f0;
-      border-radius: 6px;
-      font-family: "SF Mono", Monaco, monospace;
-      font-size: 0.8125rem;
-      margin-bottom: 0.5rem;
-      overflow-x: auto;
-    }
-
-    .command-card p {
-      margin: 0;
-      font-size: 0.875rem;
-      color: var(--muted);
-    }
-
-    /* === 手风琴 === */
-    .accordion-item {
-      margin-bottom: 0.75rem;
-      border: 1px solid #e2e8f0;
-      border-radius: var(--radius);
-      overflow: hidden;
-    }
-
-    .accordion-header {
-      width: 100%;
-      padding: 1rem 1.25rem;
-      background: var(--card-bg);
-      border: none;
-      text-align: left;
-      font-size: 1rem;
-      font-weight: 600;
-      cursor: pointer;
+    .mistake-header {
       display: flex;
       justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 10px;
+      gap: 10px;
+    }
+    .mistake-title {
+      font-family: var(--serif);
+      font-size: 18px;
+      font-weight: 500;
+      margin: 0;
+    }
+    .severity {
+      font-size: 11px;
+      font-weight: 700;
+      padding: 3px 8px;
+      border-radius: 999px;
+      white-space: nowrap;
+    }
+    .severity.critical { background: var(--error-bg); color: var(--error); }
+    .severity.error { background: var(--warning-bg); color: #92400E; }
+    .severity.warning { background: #E0E7FF; color: #3730A3; }
+
+    .compare-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin-top: 12px;
+    }
+    @media (max-width: 768px) { .compare-grid { grid-template-columns: 1fr; } }
+
+    .compare-box {
+      padding: 12px;
+      border-radius: 8px;
+      font-family: var(--mono);
+      font-size: 12.5px;
+      line-height: 1.5;
+      overflow-x: auto;
+      border: 1.5px solid transparent;
+    }
+    .compare-box.wrong {
+      background: var(--error-bg);
+      border-color: #FECACA;
+    }
+    .compare-box.right {
+      background: var(--success-bg);
+      border-color: #A7F3D0;
+    }
+    .compare-label {
+      font-family: var(--sans);
+      font-size: 12px;
+      font-weight: 700;
+      margin-bottom: 8px;
+      display: flex;
       align-items: center;
+      gap: 5px;
+    }
+    .compare-box.wrong .compare-label { color: var(--error); }
+    .compare-box.right .compare-label { color: var(--success); }
+
+    .annotated {
+      text-decoration: underline wavy var(--error);
+      text-decoration-thickness: 2px;
+      background: rgba(239,68,68,0.08);
+      padding: 0 2px;
+      border-radius: 3px;
     }
 
-    .accordion-header:hover { background: #f8fafc; }
-
-    .accordion-icon {
-      transition: transform 0.2s;
-      color: var(--muted);
+    .mistake-why {
+      margin-top: 14px;
     }
 
-    .accordion-item.open .accordion-icon { transform: rotate(180deg); }
-
-    .accordion-body {
-      display: none;
-      padding: 0 1.25rem 1.25rem;
-      background: var(--card-bg);
+    /* === 即时测验 === */
+    .quiz-progress {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 18px;
+    }
+    .quiz-progress .dot {
+      width: 14px; height: 14px;
+      border-radius: 50%;
+      background: var(--g300);
+      transition: background 0.2s;
+    }
+    .quiz-progress .dot.correct { background: var(--success); }
+    .quiz-progress .dot.wrong { background: var(--error); }
+    .quiz-progress .line {
+      flex: 1;
+      height: 2px;
+      background: var(--g300);
+      max-width: 40px;
     }
 
-    .accordion-item.open .accordion-body {
-      display: block;
-      animation: fadeIn 0.3s ease;
-    }
-
-    /* === 测验 === */
     .quiz-header {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      margin-bottom: 1rem;
+      margin-bottom: 16px;
+      flex-wrap: wrap;
+      gap: 10px;
     }
-
     .score-board {
       font-weight: 700;
-      color: var(--accent);
-      background: var(--accent-light);
-      padding: 0.375rem 0.875rem;
+      color: var(--clay);
+      background: var(--oat);
+      padding: 5px 12px;
       border-radius: 999px;
+      font-family: var(--mono);
+      font-size: 13px;
     }
 
     .question {
-      margin-bottom: 1.5rem;
-      padding-bottom: 1.5rem;
-      border-bottom: 1px solid #e2e8f0;
+      margin-bottom: 20px;
+      padding-bottom: 20px;
+      border-bottom: 1.5px solid var(--g200);
     }
-
     .question:last-child {
       border-bottom: none;
       margin-bottom: 0;
       padding-bottom: 0;
     }
-
-    .question-text { font-weight: 600; margin-bottom: 0.75rem; }
+    .question-text {
+      font-weight: 600;
+      margin-bottom: 12px;
+      line-height: 1.5;
+    }
+    .question-text .glossary-term {
+      border-bottom: 1.5px dashed var(--clay);
+      cursor: help;
+      color: var(--clay-d);
+    }
 
     .options {
       display: flex;
       flex-direction: column;
-      gap: 0.5rem;
+      gap: 8px;
     }
-
     .option {
-      padding: 0.75rem 1rem;
-      border: 1px solid #e2e8f0;
+      padding: 12px 14px;
+      border: 1.5px solid var(--g300);
       border-radius: 8px;
       cursor: pointer;
       transition: all 0.15s;
       display: flex;
       align-items: center;
-      gap: 0.5rem;
+      gap: 10px;
+      background: var(--paper);
     }
-
     .option:hover:not(.disabled) {
-      border-color: var(--accent);
-      background: #f8fafc;
+      border-color: var(--clay);
+      background: var(--g100);
     }
-
     .option.correct {
       border-color: var(--success);
       background: var(--success-bg);
     }
-
     .option.wrong {
       border-color: var(--error);
       background: var(--error-bg);
     }
-
     .option.disabled { cursor: default; }
+    .option-key {
+      font-family: var(--mono);
+      font-weight: 700;
+      color: var(--g500);
+      width: 22px;
+      flex-shrink: 0;
+    }
 
     .feedback {
-      margin-top: 0.5rem;
-      font-size: 0.875rem;
+      margin-top: 10px;
+      font-size: 14px;
       display: none;
+      padding: 10px 12px;
+      border-radius: 8px;
     }
-
     .feedback.show { display: block; }
+    .feedback.correct { background: var(--success-bg); color: #065F46; }
+    .feedback.wrong { background: var(--error-bg); color: #991B1B; }
 
-    /* === 模拟演练 === */
-    .drill-commands {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-      gap: 0.75rem;
-      margin: 1rem 0;
+    .quiz-summary {
+      display: none;
+      margin-top: 22px;
+      padding: 18px;
+      border-radius: var(--radius-sm);
+      border: 1.5px solid var(--g300);
     }
+    .quiz-summary.show { display: block; animation: fadeIn 0.3s ease; }
+    .quiz-summary.excellent { background: var(--success-bg); border-color: #A7F3D0; }
+    .quiz-summary.good { background: var(--warning-bg); border-color: #FDE68A; }
+    .quiz-summary.review { background: var(--error-bg); border-color: #FECACA; }
 
-    .drill-item {
-      padding: 0.625rem 0.875rem;
-      background: #f1f5f9;
-      border: 2px solid #e2e8f0;
-      border-radius: 8px;
-      cursor: grab;
-      font-family: "SF Mono", Monaco, monospace;
-      font-size: 0.8125rem;
-      user-select: none;
-      transition: all 0.15s;
+    /* === 修复挑战 === */
+    .challenge-area textarea {
+      width: 100%;
+      min-height: 200px;
+      padding: 14px;
+      border: 1.5px solid var(--g300);
+      border-radius: 10px;
+      font-family: var(--mono);
+      font-size: 13.5px;
+      line-height: 1.55;
+      background: #0F172A;
+      color: #E2E8F0;
+      resize: vertical;
     }
-
-    .drill-item:hover {
-      border-color: var(--accent);
-      background: #e0f2fe;
+    .challenge-actions {
+      display: flex;
+      gap: 10px;
+      margin-top: 14px;
+      flex-wrap: wrap;
+      align-items: center;
     }
-
-    .drill-item.dragging {
-      opacity: 0.5;
-      cursor: grabbing;
-    }
-
-    .drill-result {
-      margin-top: 1rem;
-      padding: 1rem;
-      border-radius: 8px;
+    .challenge-result {
+      margin-top: 14px;
+      padding: 14px;
+      border-radius: 10px;
       display: none;
     }
+    .challenge-result.show { display: block; animation: fadeIn 0.3s ease; }
+    .challenge-result.success {
+      background: var(--success-bg);
+      border: 1.5px solid #A7F3D0;
+      color: #065F46;
+    }
+    .challenge-result.error {
+      background: var(--error-bg);
+      border: 1.5px solid #FECACA;
+      color: #991B1B;
+    }
 
-    .drill-result.show { display: block; animation: fadeIn 0.3s ease; }
-    .drill-result.success { background: var(--success-bg); border: 1px solid #a7f3d0; color: #065f46; }
-    .drill-result.error { background: var(--error-bg); border: 1px solid #fecaca; color: #991b1b; }
+    .solution-compare {
+      display: none;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+      margin-top: 18px;
+    }
+    .solution-compare.show { display: grid; }
+    @media (max-width: 768px) { .solution-compare { grid-template-columns: 1fr; } }
+
+    /* === Tooltip === */
+    #tooltip {
+      position: fixed;
+      background: var(--slate);
+      color: var(--paper);
+      font-size: 12px;
+      padding: 7px 11px;
+      border-radius: 7px;
+      max-width: 240px;
+      line-height: 1.45;
+      z-index: 2000;
+      pointer-events: none;
+      opacity: 0;
+      transform: translateY(4px);
+      transition: opacity 0.15s, transform 0.15s;
+      box-shadow: var(--shadow-strong);
+    }
+    #tooltip.show { opacity: 1; transform: translateY(0); }
+
+    /* === Toast === */
+    #toast {
+      position: fixed;
+      bottom: 24px;
+      left: 50%;
+      transform: translateX(-50%) translateY(20px);
+      background: var(--slate);
+      color: var(--paper);
+      padding: 10px 18px;
+      border-radius: 999px;
+      font-size: 13px;
+      font-weight: 500;
+      z-index: 2000;
+      opacity: 0;
+      transition: opacity 0.25s, transform 0.25s;
+      box-shadow: var(--shadow-strong);
+    }
+    #toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
 
     /* === Footer === */
     footer {
-      text-align: center;
-      padding: 2rem 0 3rem;
-      color: var(--muted);
-      font-size: 0.875rem;
-      border-top: 1px solid #e2e8f0;
+      margin-top: 100px;
+      border-top: 1.5px solid var(--g300);
+      padding-top: 36px;
+      color: var(--g500);
+      font-size: 13.5px;
+    }
+    .completion-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin: 14px 0;
+    }
+    .completion-item {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 5px 10px;
+      border: 1.5px solid var(--g300);
+      border-radius: 999px;
+      font-size: 12px;
+      color: var(--g700);
+      background: var(--paper);
+    }
+    .completion-item.done { border-color: var(--success); color: var(--success); }
+
+    /* === 动画 === */
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(-8px); }
+      to { opacity: 1; transform: translateY(0); }
     }
 
     /* === 响应式 === */
     @media (max-width: 768px) {
-      .timeline { padding-left: 1.5rem; }
-      .step-card::before {
-        left: -1.9rem;
-        width: 26px;
-        height: 26px;
-        font-size: 0.75rem;
-      }
-      .timeline::before { left: 12px; }
+      .playground,
+      .solution-compare { grid-template-columns: 1fr; }
+      .tag-grid { grid-template-columns: repeat(2, 1fr); }
+      header.masthead { padding-top: 56px; }
     }
 
+    /* === 辅助类 === */
     .sr-only {
       position: absolute;
-      width: 1px;
-      height: 1px;
-      padding: 0;
-      margin: -1px;
+      width: 1px; height: 1px;
+      padding: 0; margin: -1px;
       overflow: hidden;
       clip: rect(0, 0, 0, 0);
       border: 0;
@@ -572,150 +873,219 @@
   </style>
 </head>
 <body>
+  <!-- 进度条 -->
   <div class="progress-container" aria-hidden="true">
     <div class="progress-bar" id="progressBar"></div>
   </div>
 
-  <header>
-    <div class="container">
-      <h1>GitHub Pages 部署完全指南</h1>
-      <p>基于真实操作记录：从零开始，把一个本地 HTML 页面免费部署到互联网上，并能够通过网址访问。</p>
-      <a href="https://zxvl123.github.io/html-learning/" target="_blank" rel="noopener" class="result-link">
-        🌐 查看我们刚部署好的示例页面
-      </a>
+  <header class="masthead">
+    <div class="wrap">
+      <div class="eyebrow">交互式 HTML 记忆库</div>
+      <h1>HTML 标签与<em>嵌套</em></h1>
+      <p class="intro">
+        通过动手实践理解 HTML 的基本结构：标签是什么、如何嵌套、常见错误有哪些。
+        边玩边学，效率更高。
+      </p>
+
+      <div class="tldr" role="note">
+        <strong>一句话总结：</strong>本页通过 6 个核心标签、实时编辑器、3 类常见错误和交互测验，帮助你掌握 HTML 嵌套规则。所有内容都在这一个 <code>.html</code> 文件里，无需安装任何东西。
+      </div>
+
+      <nav class="toc" aria-label="页面章节导航">
+        <a href="#tags" class="active">标签速览 <span class="n">01</span></a>
+        <a href="#playground">嵌套实验室 <span class="n">02</span></a>
+        <a href="#mistakes">常见错误 <span class="n">03</span></a>
+        <a href="#quiz">即时测验 <span class="n">04</span></a>
+        <a href="#challenge">修复挑战 <span class="n">05</span></a>
+      </nav>
+
+      <div class="learning-path">
+        <div class="collapsible" id="pathPanel">
+          <button class="collapsible-header" aria-expanded="false" aria-controls="pathBody">
+            <span>📍 展开学习路径</span>
+            <span class="collapsible-icon" aria-hidden="true">▼</span>
+          </button>
+          <div class="collapsible-body" id="pathBody">
+            <div class="collapsible-inner">
+              <div class="path-steps">
+                <div class="path-step"><span class="dot">1</span> 认识标签</div>
+                <div class="path-step"><span class="dot">2</span> 动手实验</div>
+                <div class="path-step"><span class="dot">3</span> 识别错误</div>
+                <div class="path-step"><span class="dot">4</span> 测验巩固</div>
+                <div class="path-step"><span class="dot">5</span> 修复挑战</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   </header>
 
-  <main class="container">
-    <!-- SECTION 1: 准备工作 -->
-    <section id="prerequisites" data-section>
-      <h2 class="section-title">
-        <span class="icon">🛠️</span>
-        准备工作
-      </h2>
+  <main class="wrap">
+    <!-- SECTION 1: 标签速览 -->
+    <section id="tags" data-section>
+      <div class="sec-head">
+        <span class="idx">01</span>
+        <h2>标签速览</h2>
+        <span class="count">6 个核心标签</span>
+      </div>
+      <p class="sec-intro">
+        先认识最常用的 HTML 标签。点击卡片查看说明、代码和渲染效果；容器类标签还附带嵌套关系图。
+      </p>
+      <div class="tag-grid" id="tagGrid"></div>
+      <div class="tag-detail" id="tagDetail" role="region" aria-live="polite"></div>
+    </section>
+
+    <!-- SECTION 2: 嵌套实验室 -->
+    <section id="playground" data-section>
+      <div class="sec-head">
+        <span class="idx">02</span>
+        <h2>嵌套实验室</h2>
+        <span class="count">实时编辑器</span>
+      </div>
+      <p class="sec-intro">
+        在左侧编辑器里修改 HTML，右侧会实时渲染结果。使用快捷工具栏插入标签，或载入示例快速开始。
+      </p>
       <div class="card">
-        <p style="margin-top: 0;">开始之前，你需要准备以下三样东西：</p>
-        <div class="command-grid">
-          <div class="command-card">
-            <strong>1. Git Bash</strong>
-            <p>Windows 上推荐用 Git Bash 执行 git 命令。安装 Git 时会附带。</p>
+        <div class="playground">
+          <div class="editor-pane">
+            <div class="pane-label">
+              <span>HTML 代码</span>
+              <div class="toolbar">
+                <select id="exampleSelect" aria-label="载入示例">
+                  <option value="">载入示例…</option>
+                  <option value="card">图片卡片</option>
+                  <option value="list">链接列表</option>
+                  <option value="nested">嵌套容器</option>
+                </select>
+                <button class="tool-btn" data-insert="p" title="插入段落标签">&lt;p&gt;</button>
+                <button class="tool-btn" data-insert="div" title="插入块级容器">&lt;div&gt;</button>
+                <button class="tool-btn" data-insert="span" title="插入行内容器">&lt;span&gt;</button>
+                <button class="tool-btn" data-insert="a" title="插入链接">&lt;a&gt;</button>
+                <button class="tool-btn" data-insert="img" title="插入图片">&lt;img&gt;</button>
+                <button class="tool-btn" data-insert="strong" title="插入加粗">&lt;strong&gt;</button>
+              </div>
+            </div>
+            <textarea id="htmlInput" spellcheck="false" aria-label="HTML 编辑器"></textarea>
+            <div style="margin-top: 8px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px;">
+              <span id="playgroundStatus" class="status-badge ok">结构正常</span>
+              <div style="display: flex; gap: 8px;">
+                <button class="btn small secondary" id="resetPlayground">重置</button>
+                <button class="btn small" id="exportPlayground">复制当前 HTML</button>
+              </div>
+            </div>
           </div>
-          <div class="command-card">
-            <strong>2. GitHub 账号</strong>
-            <p>如果没有，去 <a href="https://github.com/signup" target="_blank">github.com/signup</a> 注册一个。</p>
-          </div>
-          <div class="command-card">
-            <strong>3. 一个 HTML 文件</strong>
-            <p>比如你已经写好的 <code>html-tags-nesting.html</code>，这是我们要部署的页面。</p>
+          <div class="preview-pane">
+            <div class="pane-label">实时预览</div>
+            <div class="preview-box" id="livePreview"></div>
           </div>
         </div>
       </div>
     </section>
 
-    <!-- SECTION 2: 部署步骤 -->
-    <section id="steps" data-section>
-      <h2 class="section-title">
-        <span class="icon">📋</span>
-        部署步骤
-      </h2>
-      <div class="tip-box info">
-        <strong>小提示：</strong>点击每一步卡片可以展开详细命令和说明。命令右侧有“复制”按钮，可以直接粘贴到 Git Bash 里执行。
+    <!-- SECTION 3: 常见错误 -->
+    <section id="mistakes" data-section>
+      <div class="sec-head">
+        <span class="idx">03</span>
+        <h2>常见错误</h2>
+        <span class="count">3 类典型问题</span>
       </div>
-      <div class="timeline" id="stepsTimeline">
-        <!-- 步骤由 JS 生成 -->
-      </div>
+      <p class="sec-intro">
+        像审查 PR 一样查看这些错误：左边是问题代码（带批注），右边是修正后的写法。展开"为什么重要"了解深层原因。
+      </p>
+      <div class="mistake-grid" id="mistakeGrid"></div>
     </section>
 
-    <!-- SECTION 3: 命令速查 -->
-    <section id="commands" data-section>
-      <h2 class="section-title">
-        <span class="icon">⌨️</span>
-        命令速查表
-      </h2>
-      <div class="card">
-        <p style="margin-top: 0; color: var(--muted);">下面这张表汇总了本次部署过程中用到的所有 Git Bash 命令，方便你快速回顾。</p>
-        <div class="command-grid" id="commandGrid">
-          <!-- 命令卡片由 JS 生成 -->
-        </div>
-      </div>
-    </section>
-
-    <!-- SECTION 4: 常见问题 -->
-    <section id="troubleshooting" data-section>
-      <h2 class="section-title">
-        <span class="icon">🔧</span>
-        常见问题排查
-      </h2>
-      <div class="card" id="troubleshootingAccordion">
-        <!-- 问题手风琴由 JS 生成 -->
-      </div>
-    </section>
-
-    <!-- SECTION 5: 知识测验 -->
+    <!-- SECTION 4: 即时测验 -->
     <section id="quiz" data-section>
-      <h2 class="section-title">
-        <span class="icon">📝</span>
-        知识测验
-      </h2>
+      <div class="sec-head">
+        <span class="idx">04</span>
+        <h2>即时测验</h2>
+        <span class="count">3 道题</span>
+      </div>
+      <p class="sec-intro">
+        检验你的理解。悬停题目中的术语可查看提示，答完能看到复习摘要和跳转链接。
+      </p>
       <div class="card">
         <div class="quiz-header">
-          <span>检验一下你记住了多少</span>
-          <span class="score-board" id="scoreBoard">得分：0 / 5</span>
+          <div class="quiz-progress" id="quizProgress" aria-hidden="true">
+            <span class="dot"></span>
+            <span class="line"></span>
+            <span class="dot"></span>
+            <span class="line"></span>
+            <span class="dot"></span>
+          </div>
+          <span class="score-board" id="scoreBoard">得分：0 / 3</span>
         </div>
         <div id="quizContainer"></div>
+        <div class="quiz-summary" id="quizSummary" role="status" aria-live="polite"></div>
       </div>
     </section>
 
-    <!-- SECTION 6: 模拟演练 -->
-    <section id="drill" data-section>
-      <h2 class="section-title">
-        <span class="icon">✍️</span>
-        模拟演练
-      </h2>
-      <div class="card">
-        <p style="margin-top: 0; color: var(--muted);">下面这几个命令被打乱了顺序。请把它们按正确的部署流程排序（拖拽调整顺序），然后点击“检查顺序”。</p>
-        <div class="drill-commands" id="drillCommands">
-          <!-- 演练项由 JS 生成 -->
-        </div>
-
-        <div style="display: flex; gap: 0.75rem; margin-top: 1rem;">
-          <button class="btn" id="checkDrill">检查顺序</button>
-          <button class="btn secondary" id="resetDrill">重置</button>
-        </div>
-
-        <div class="drill-result" id="drillResult" role="status" aria-live="polite"></div>
+    <!-- SECTION 5: 修复挑战 -->
+    <section id="challenge" data-section>
+      <div class="sec-head">
+        <span class="idx">05</span>
+        <h2>修复挑战</h2>
+        <span class="count">多轮练习</span>
       </div>
-    </section>
-
-    <!-- SECTION 7: 下一步 -->
-    <section id="next" data-section>
-      <h2 class="section-title">
-        <span class="icon">🎯</span>
-        下一步
-      </h2>
+      <p class="sec-intro">
+        下面这段 HTML 有嵌套错误。分级提示会引导你，完成可对比答案并继续下一题。
+      </p>
       <div class="card">
-        <p style="margin-top: 0;">恭喜！你已经掌握了把 HTML 页面部署到 GitHub Pages 的完整流程。</p>
-        <p>现在你可以：</p>
-        <ul style="padding-left: 1.25rem;">
-          <li>修改页面内容，然后 <code>git add .</code>、<code>git commit</code>、<code>git push</code> 更新网站</li>
-          <li>用同样的方法部署更多页面或项目</li>
-          <li>学习自定义域名，把 <code>username.github.io</code> 换成自己的域名</li>
-          <li>探索 Jekyll、Hugo 等静态网站生成器，搭建更复杂的站点</li>
-        </ul>
+        <div class="collapsible" style="margin-bottom: 14px;">
+          <button class="collapsible-header" aria-expanded="false" aria-controls="hintBody">
+            <span>💡 需要提示？（逐级展开）</span>
+            <span class="collapsible-icon" aria-hidden="true">▼</span>
+          </button>
+          <div class="collapsible-body" id="hintBody">
+            <div class="collapsible-inner" id="hintList" style="display: flex; flex-direction: column; gap: 8px;"></div>
+          </div>
+        </div>
 
-        <div class="tip-box success" style="margin-bottom: 0;">
-          <strong>你已经部署的页面：</strong> <a href="https://zxvl123.github.io/html-learning/" target="_blank">https://zxvl123.github.io/html-learning/</a>
+        <div class="challenge-area">
+          <textarea id="challengeInput" spellcheck="false" aria-label="修复挑战代码编辑器"></textarea>
+        </div>
+        <div class="challenge-actions">
+          <button class="btn" id="checkChallenge">检查答案</button>
+          <button class="btn secondary" id="resetChallenge">重置</button>
+          <button class="btn secondary" id="nextChallenge" style="display: none;">下一题</button>
+        </div>
+        <div class="challenge-result" id="challengeResult" role="status" aria-live="polite"></div>
+        <div class="solution-compare" id="solutionCompare">
+          <div>
+            <div class="compare-label">你的修复</div>
+            <pre class="code-block" id="userSolution"></pre>
+          </div>
+          <div>
+            <div class="compare-label">参考答案</div>
+            <pre class="code-block" id="targetSolution"></pre>
+          </div>
         </div>
       </div>
     </section>
   </main>
 
   <footer>
-    <div class="container">
-      <p>GitHub Pages 部署交互式教程 · 基于真实操作记录制作</p>
-      <p style="font-size: 0.8125rem; margin-top: 0.5rem;">本页面本身也可以作为模板，用来制作其他技术教程。</p>
+    <div class="wrap">
+      <p><strong>学习进度</strong></p>
+      <div class="completion-list" id="completionList">
+        <span class="completion-item" data-id="tags">标签速览</span>
+        <span class="completion-item" data-id="playground">嵌套实验室</span>
+        <span class="completion-item" data-id="mistakes">常见错误</span>
+        <span class="completion-item" data-id="quiz">即时测验</span>
+        <span class="completion-item" data-id="challenge">修复挑战</span>
+      </div>
+      <div style="display: flex; justify-content: space-between; align-items: baseline; flex-wrap: wrap; gap: 12px;">
+        <p style="margin: 0;">交互式 HTML 记忆库 · 单文件零依赖</p>
+        <button class="btn small secondary" id="resetAll">重置进度</button>
+      </div>
     </div>
   </footer>
+
+  <!-- 悬浮提示 -->
+  <div id="tooltip" role="tooltip"></div>
+  <div id="toast" role="status" aria-live="polite"></div>
 
   <script>
     // === 状态 ===
@@ -723,7 +1093,8 @@
       score: 0,
       answeredQuestions: new Set(),
       completedSections: new Set(),
-      completedSteps: new Set()
+      currentChallenge: 0,
+      tagDetailOpen: false
     };
 
     // === 工具函数 ===
@@ -736,10 +1107,37 @@
     }
 
     function escapeHtml(str) {
-      return String(str)
+      return str
         .replace(/&/g, '&amp;')
         .replace(/</g, '&lt;')
         .replace(/>/g, '&gt;');
+    }
+
+    function showToast(message) {
+      const toast = document.getElementById('toast');
+      toast.textContent = message;
+      toast.classList.add('show');
+      setTimeout(() => toast.classList.remove('show'), 2200);
+    }
+
+    function copyText(text) {
+      function fallbackCopy() {
+        const ta = document.createElement('textarea');
+        ta.value = text;
+        document.body.appendChild(ta);
+        ta.select();
+        document.execCommand('copy');
+        document.body.removeChild(ta);
+        showToast('已复制到剪贴板');
+      }
+
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(text)
+          .then(() => showToast('已复制到剪贴板'))
+          .catch(fallbackCopy);
+      } else {
+        fallbackCopy();
+      }
     }
 
     function updateProgress() {
@@ -748,6 +1146,16 @@
       const completed = state.completedSections.size;
       const percent = Math.round((completed / total) * 100);
       document.getElementById('progressBar').style.width = percent + '%';
+
+      document.querySelectorAll('.completion-item').forEach(item => {
+        if (state.completedSections.has(item.dataset.id)) {
+          item.classList.add('done');
+          item.textContent = '✓ ' + item.textContent.replace(/^✓\s*/, '');
+        } else {
+          item.classList.remove('done');
+          item.textContent = item.textContent.replace(/^✓\s*/, '');
+        }
+      });
     }
 
     function markSectionComplete(id) {
@@ -755,396 +1163,481 @@
       updateProgress();
     }
 
-    // === 复制功能 ===
-    async function copyToClipboard(text, btn) {
-      try {
-        if (navigator.clipboard && window.isSecureContext) {
-          await navigator.clipboard.writeText(text);
-        } else {
-          const textarea = document.createElement('textarea');
-          textarea.value = text;
-          textarea.style.position = 'fixed';
-          textarea.style.opacity = '0';
-          document.body.appendChild(textarea);
-          textarea.select();
-          document.execCommand('copy');
-          document.body.removeChild(textarea);
-        }
-
-        const originalText = btn.textContent;
-        btn.textContent = '已复制!';
-        btn.classList.add('copied');
-        setTimeout(() => {
-          btn.textContent = originalText;
-          btn.classList.remove('copied');
-        }, 2000);
-      } catch (err) {
-        console.error('复制失败:', err);
-        btn.textContent = '复制失败';
-        setTimeout(() => btn.textContent = '复制', 2000);
-      }
-    }
-
-    function createCommandBlock(command, label = 'Git Bash') {
-      const wrapper = document.createElement('div');
-      wrapper.className = 'command-block';
-      wrapper.innerHTML = `
-        <div class="command-header">
-          <span class="command-label">${label}</span>
-          <button class="copy-btn" type="button">复制</button>
-        </div>
-        <pre><code>${escapeHtml(command)}</code></pre>
-      `;
-      wrapper.querySelector('.copy-btn').addEventListener('click', (e) => {
-        e.stopPropagation();
-        copyToClipboard(command, e.target);
+    // === 语法高亮 ===
+    function highlightCode(code) {
+      const escaped = escapeHtml(code);
+      // 单次扫描，避免多轮 replace 破坏已插入的 span 标签
+      return escaped.replace(/(&lt;\/?)([a-z0-9]+)|([a-z\-]+)(=)|(".*?")/gi, (match, open, tagName, attrName, eq, strVal) => {
+        if (open !== undefined) return `${open}<span class="tag">${tagName}</span>`;
+        if (attrName !== undefined) return `<span class="attr">${attrName}</span>${eq}`;
+        if (strVal !== undefined) return `<span class="val">${strVal}</span>`;
+        return match;
       });
-      return wrapper;
     }
 
-    // === 部署步骤 ===
-    const steps = [
-      {
-        title: '创建项目目录',
-        summary: '在本地新建一个文件夹，用来放要部署的网页文件',
-        content: `
-          <p>首先，在电脑里给你的项目建一个“家”。名字可以随便取，这里我们用 <code>html-learning</code>。</p>
-          <p><strong>作用：</strong>把所有相关文件集中管理，方便后续用 git 跟踪。</p>
-        `,
-        commands: ['mkdir html-learning', 'cd html-learning']
-      },
-      {
-        title: '准备入口文件',
-        summary: '把 HTML 文件复制进项目目录，并重命名为 index.html',
-        content: `
-          <p>GitHub Pages 默认会找仓库根目录下的 <code>index.html</code> 作为网站首页。</p>
-          <p><strong>作用：</strong>让访问 <code>username.github.io/repo-name</code> 时，自动展示这个页面。</p>
-        `,
-        commands: ['cp ../html-tags-nesting.html index.html']
-      },
-      {
-        title: '初始化 Git 仓库',
-        summary: '在项目目录里创建本地 git 仓库',
-        content: `
-          <p><code>git init</code> 会在当前目录生成一个隐藏的 <code>.git</code> 文件夹，用来记录文件的所有变更历史。</p>
-          <p><strong>作用：</strong>开启版本控制，以后每次修改都可以回溯。</p>
-        `,
-        commands: ['git init']
-      },
-      {
-        title: '配置 Git 身份信息',
-        summary: '告诉 git 你是谁，这样提交记录里才会有你的名字',
-        content: `
-          <p>第一次使用 git 时需要设置用户名和邮箱。如果跳过这一步，<code>git commit</code> 会报错。</p>
-          <p><strong>注意：</strong>邮箱建议用你 GitHub 账号绑定的邮箱，这样提交记录才能正确关联到你。</p>
-        `,
-        commands: ['git config user.name "你的名字"', 'git config user.email "你的邮箱@example.com"']
-      },
-      {
-        title: '提交文件',
-        summary: '把 index.html 添加到 git 并保存一次快照',
-        content: `
-          <p><code>git add .</code> 把文件放进“暂存区”，<code>git commit</code> 正式保存这次修改。</p>
-          <p><strong>作用：</strong>生成一个可被推送到 GitHub 的提交记录。</p>
-        `,
-        commands: ['git add .', 'git commit -m "Initial interactive HTML learning page"']
-      },
-      {
-        title: '创建 GitHub 远程仓库',
-        summary: '在 GitHub 上创建一个空仓库，用来存放代码',
-        content: `
-          <p>有两种方式：用 GitHub CLI 一键创建，或者先去 GitHub 网页手动创建。</p>
-          <p><strong>注意：</strong>用 <code>gh</code> 创建需要你的 token 有 <code>repo</code> 权限。如果报错 403，请看下方的“常见问题排查”。</p>
-        `,
-        commands: ['gh repo create html-learning --public --source=. --push']
-      },
-      {
-        title: '关联并推送代码',
-        summary: '把本地仓库和 GitHub 仓库连接起来，上传代码',
-        content: `
-          <p>如果你是用 <code>gh repo create --push</code> 成功的，这一步可能已经自动完成了。</p>
-          <p>如果是手动在 GitHub 网页创建的仓库，需要执行这三行命令把代码推上去。</p>
-        `,
-        commands: [
-          'git remote add origin https://github.com/ZXVL123/html-learning.git',
-          'git branch -M main',
-          'git push -u origin main'
-        ]
-      },
-      {
-        title: '开启 GitHub Pages',
-        summary: '在 GitHub 仓库设置里启用 Pages 服务',
-        content: `
-          <p>这一步在 GitHub 网页上操作：</p>
-          <ol>
-            <li>打开仓库页面：<code>https://github.com/ZXVL123/html-learning</code></li>
-            <li>点击上方 <strong>Settings</strong></li>
-            <li>左侧菜单点击 <strong>Pages</strong></li>
-            <li>Source 选择 <strong>Deploy from a branch</strong></li>
-            <li>Branch 选 <strong>main</strong>，文件夹选 <strong>/ (root)</strong></li>
-            <li>点击 <strong>Save</strong></li>
-          </ol>
-          <p><strong>作用：</strong>让 GitHub 自动把你的 <code>index.html</code> 部署成可访问的网站。</p>
-        `,
-        commands: []
+    // === TOC 导航 ===
+    function initTOC() {
+      const tocLinks = document.querySelectorAll('.toc a');
+      const sections = Array.from(document.querySelectorAll('section[data-section]'));
+
+      function setActive(id) {
+        tocLinks.forEach(link => {
+          link.classList.toggle('active', link.getAttribute('href') === '#' + id);
+        });
       }
+
+      function updateActiveOnScroll() {
+        const threshold = window.innerHeight * 0.25;
+        let current = sections[0]?.id;
+        for (const sec of sections) {
+          const rect = sec.getBoundingClientRect();
+          if (rect.top <= threshold) {
+            current = sec.id;
+          }
+        }
+        setActive(current);
+      }
+
+      const observer = new IntersectionObserver(entries => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) setActive(entry.target.id);
+        });
+      }, { rootMargin: '-20% 0px -60% 0px', threshold: 0 });
+
+      sections.forEach(sec => observer.observe(sec));
+      window.addEventListener('scroll', debounce(updateActiveOnScroll, 50));
+      updateActiveOnScroll();
+    }
+
+    // === 折叠面板 ===
+    function initCollapsibles() {
+      document.querySelectorAll('.collapsible').forEach(panel => {
+        const header = panel.querySelector('.collapsible-header');
+        header.addEventListener('click', () => {
+          const isOpen = panel.classList.toggle('open');
+          header.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+        });
+      });
+    }
+
+    // === 标签卡片 ===
+    const tags = [
+      { name: 'p', desc: '段落标签', category: 'block', detail: '用于定义一段文本。浏览器会自动在段落前后添加一些空白。', example: '<p>这是一段文字。</p>' },
+      { name: 'h1', desc: '一级标题', category: 'block', detail: '用于定义页面最重要的标题。一个页面通常只应有一个 h1。', example: '<h1>文章标题</h1>' },
+      { name: 'a', desc: '超链接', category: 'inline', detail: '用于创建跳转到其他页面或锚点的链接，需要 href 属性。', example: '<a href="https://example.com">点击这里</a>' },
+      { name: 'img', desc: '图片', category: 'media', detail: '用于在页面中嵌入图片，是自闭合标签，需要 src 和 alt 属性。', example: '<img src="photo.jpg" alt="描述文字" />' },
+      { name: 'div', desc: '块级容器', category: 'container', detail: '用于组合其他元素，本身没有特殊语义，是最常用的布局容器。', example: '<div>\n  <p>容器内的段落</p>\n</div>' },
+      { name: 'span', desc: '行内容器', category: 'container', detail: '用于在行内包裹一小段内容，常与 CSS/JS 配合。', example: '<p>这是一段 <span>高亮</span> 文字。</p>' }
     ];
 
-    function initSteps() {
-      const container = document.getElementById('stepsTimeline');
+    const categoryLabels = {
+      block: '块级',
+      inline: '行内',
+      media: '媒体',
+      container: '容器'
+    };
 
-      steps.forEach((step, index) => {
+    function renderNestingSVG(tagName) {
+      if (tagName === 'div') {
+        return `<svg class="svg-diagram" viewBox="0 0 200 120">
+          <rect x="10" y="10" width="180" height="100" rx="8" fill="var(--oat)" stroke="var(--g500)" stroke-width="2"/>
+          <text x="100" y="28" text-anchor="middle" font-size="13" fill="var(--slate)" font-family="var(--sans)">&lt;div&gt; 块级容器</text>
+          <rect x="30" y="42" width="140" height="54" rx="6" fill="var(--paper)" stroke="var(--g300)" stroke-width="1.5"/>
+          <text x="100" y="72" text-anchor="middle" font-size="12" fill="var(--g700)" font-family="var(--sans)">里面可以放 p、h1、img 等</text>
+        </svg>`;
+      }
+      if (tagName === 'span') {
+        return `<svg class="svg-diagram" viewBox="0 0 200 90">
+          <text x="100" y="28" text-anchor="middle" font-size="13" fill="var(--slate)" font-family="var(--sans)">行内包裹一小段内容</text>
+          <rect x="24" y="44" width="152" height="32" rx="6" fill="var(--g100)" stroke="var(--g300)" stroke-width="1.5"/>
+          <text x="100" y="65" text-anchor="middle" font-size="12" fill="var(--g700)" font-family="var(--sans)">这里是 &lt;span&gt;高亮&lt;/span&gt; 文字</text>
+        </svg>`;
+      }
+      return '';
+    }
+
+    function initTagCards() {
+      const grid = document.getElementById('tagGrid');
+      const detail = document.getElementById('tagDetail');
+
+      tags.forEach((tag, index) => {
         const card = document.createElement('div');
-        card.className = 'step-card';
-        card.setAttribute('data-step', index + 1);
+        card.className = 'tag-card';
         card.setAttribute('role', 'button');
         card.setAttribute('tabindex', '0');
         card.setAttribute('aria-expanded', 'false');
-
-        let commandsHtml = '';
-        if (step.commands.length > 0) {
-          commandsHtml = '<div style="margin-top: 0.75rem;">';
-          step.commands.forEach(cmd => {
-            const block = createCommandBlock(cmd);
-            commandsHtml += block.outerHTML;
-          });
-          commandsHtml += '</div>';
-        }
-
         card.innerHTML = `
-          <div class="step-header">
-            <div>
-              <div class="step-title">${step.title}</div>
-              <div class="step-summary">${step.summary}</div>
-            </div>
-            <span class="step-icon" aria-hidden="true">▼</span>
-          </div>
-          <div class="step-body">
-            ${step.content}
-            ${commandsHtml}
-          </div>
+          <span class="badge ${tag.category}">${categoryLabels[tag.category]}</span>
+          <div class="tag-name">&lt;${tag.name}&gt;</div>
+          <div class="tag-desc">${escapeHtml(tag.desc)}</div>
         `;
 
-        function toggle() {
-          const isOpen = card.classList.contains('active');
-          container.querySelectorAll('.step-card').forEach(c => {
+        function activate() {
+          document.querySelectorAll('.tag-card').forEach(c => {
             c.classList.remove('active');
             c.setAttribute('aria-expanded', 'false');
           });
-          if (!isOpen) {
-            card.classList.add('active');
-            card.setAttribute('aria-expanded', 'true');
-            state.completedSteps.add(index);
-            if (state.completedSteps.size >= 4) {
-              markSectionComplete('steps');
-            }
-          }
+          card.classList.add('active');
+          card.setAttribute('aria-expanded', 'true');
+          state.tagDetailOpen = true;
+
+          const svg = renderNestingSVG(tag.name);
+          detail.innerHTML = `
+            <div class="tab-bar" role="tablist" aria-label="${tag.name} 详情">
+              <button class="tab-btn active" role="tab" aria-selected="true" data-tab="desc">说明</button>
+              <button class="tab-btn" role="tab" aria-selected="false" data-tab="code">代码</button>
+              <button class="tab-btn" role="tab" aria-selected="false" data-tab="render">效果</button>
+            </div>
+            <div class="tab-panel active" data-panel="desc">
+              <h3 style="margin-top: 0; font-family: var(--serif);">&lt;${tag.name}&gt; — ${escapeHtml(tag.desc)}</h3>
+              <p>${escapeHtml(tag.detail)}</p>
+              ${svg}
+            </div>
+            <div class="tab-panel" data-panel="code">
+              <pre class="code-block">${highlightCode(tag.example)}</pre>
+            </div>
+            <div class="tab-panel" data-panel="render">
+              <div class="render-box">${tag.example}</div>
+            </div>
+          `;
+          detail.classList.add('show');
+
+          // Tab 切换
+          detail.querySelectorAll('.tab-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+              detail.querySelectorAll('.tab-btn').forEach(b => {
+                b.classList.remove('active');
+                b.setAttribute('aria-selected', 'false');
+              });
+              detail.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+              btn.classList.add('active');
+              btn.setAttribute('aria-selected', 'true');
+              detail.querySelector(`[data-panel="${btn.dataset.tab}"]`).classList.add('active');
+            });
+          });
+
+          markSectionComplete('tags');
         }
 
-        card.addEventListener('click', toggle);
+        card.addEventListener('click', activate);
         card.addEventListener('keydown', (e) => {
           if (e.key === 'Enter' || e.key === ' ') {
             e.preventDefault();
-            toggle();
+            activate();
           }
         });
 
-        container.appendChild(card);
-      });
-    }
-
-    // === 命令速查表 ===
-    const commandReference = [
-      { cmd: 'mkdir html-learning', desc: '创建名为 html-learning 的目录' },
-      { cmd: 'cd html-learning', desc: '进入项目目录' },
-      { cmd: 'cp ../html-tags-nesting.html index.html', desc: '复制并重命名入口文件' },
-      { cmd: 'git init', desc: '初始化本地 Git 仓库' },
-      { cmd: 'git config user.name "..."', desc: '设置提交者姓名' },
-      { cmd: 'git config user.email "..."', desc: '设置提交者邮箱' },
-      { cmd: 'git add .', desc: '把文件加入暂存区' },
-      { cmd: 'git commit -m "..."', desc: '保存提交快照' },
-      { cmd: 'gh repo create ...', desc: '用 GitHub CLI 创建远程仓库' },
-      { cmd: 'gh auth login', desc: '登录 GitHub CLI' },
-      { cmd: 'git remote add origin ...', desc: '手动关联远程仓库地址' },
-      { cmd: 'git branch -M main', desc: '把分支名改为 main' },
-      { cmd: 'git push -u origin main', desc: '推送代码到 GitHub' }
-    ];
-
-    function initCommandReference() {
-      const grid = document.getElementById('commandGrid');
-      commandReference.forEach(item => {
-        const card = document.createElement('div');
-        card.className = 'command-card';
-        card.innerHTML = `
-          <code>${escapeHtml(item.cmd)}</code>
-          <p>${item.desc}</p>
-        `;
-        card.addEventListener('click', () => markSectionComplete('commands'));
         grid.appendChild(card);
       });
     }
 
-    // === 常见问题 ===
-    const troubleshootingItems = [
-      {
-        title: 'gh repo create 报 403 / Resource not accessible by personal access token',
-        content: `
-          <p><strong>症状：</strong>运行 <code>gh repo create</code> 时提示 <code>Resource not accessible by personal access token</code>。</p>
-          <p><strong>原因：</strong>当前 <code>gh</code> 登录的 token 没有创建仓库的权限。</p>
-          <p><strong>解决：</strong></p>
-          <ol>
-            <li>去 <a href="https://github.com/settings/tokens/new?scopes=repo,read:org,workflow" target="_blank">这里</a> 生成 classic token</li>
-            <li>勾选 <code>repo</code>、<code>read:org</code>、<code>workflow</code></li>
-            <li>运行 <code>gh auth login</code>，选择 Paste an authentication token，粘贴新 token</li>
-            <li>重新执行 <code>gh repo create</code> 或推送命令</li>
-          </ol>
-        `
-      },
-      {
-        title: 'git push 报 403 / unable to access',
-        content: `
-          <p><strong>症状：</strong><code>git push -u origin main</code> 失败，提示 <code>Permission denied</code> 或 <code>403</code>。</p>
-          <p><strong>原因：</strong>当前凭证没有写仓库权限。</p>
-          <p><strong>解决：</strong>重新用有 <code>repo</code> 权限的 token 登录：</p>
-          <pre style="background:#0f172a;color:#e2e8f0;padding:0.75rem;border-radius:8px;"><code>gh auth login
-# 选择 HTTPS → Yes → Paste an authentication token
-# 粘贴包含 repo、read:org、workflow 权限的 token
-git push -u origin main</code></pre>
-        `
-      },
-      {
-        title: 'gh auth login 浏览器授权超时',
-        content: `
-          <p><strong>症状：</strong><code>failed to authenticate via web browser: ... TLS handshake timeout</code>。</p>
-          <p><strong>原因：</strong>网络环境导致浏览器 OAuth 流程无法完成。</p>
-          <p><strong>解决：</strong>改用“粘贴 token”方式登录：</p>
-          <ol>
-            <li><code>gh auth login</code></li>
-            <li>选择 GitHub.com → HTTPS → Yes</li>
-            <li>选择 <strong>Paste an authentication token</strong></li>
-            <li>粘贴 classic PAT</li>
-          </ol>
-        `
-      },
-      {
-        title: 'token 验证失败：missing required scope read:org',
-        content: `
-          <p><strong>症状：</strong><code>error validating token: missing required scope 'read:org'</code>。</p>
-          <p><strong>原因：</strong>生成的 token 只勾选了 <code>repo</code>，缺少 <code>read:org</code> 和 <code>workflow</code>。</p>
-          <p><strong>解决：</strong>重新生成 token，确保同时勾选 <code>repo</code>、<code>read:org</code>、<code>workflow</code>，然后重新登录。</p>
-        `
-      },
-      {
-        title: '开启 Pages 后网页打不开或 404',
-        content: `
-          <p><strong>症状：</strong>访问 <code>username.github.io/repo-name</code> 显示 404。</p>
-          <p><strong>原因：</strong>GitHub Pages 部署需要 1～2 分钟，或者 <code>index.html</code> 不在仓库根目录。</p>
-          <p><strong>解决：</strong></p>
-          <ol>
-            <li>等待 1～2 分钟后再刷新</li>
-            <li>确认仓库根目录有 <code>index.html</code></li>
-            <li>在仓库 Settings → Pages 里查看部署状态</li>
-          </ol>
-        `
-      }
-    ];
+    // === 嵌套实验室 ===
+    const examples = {
+      card: `<div style="padding: 1rem; background: #E0F2FE; border-radius: 10px; max-width: 260px;">
+  <img src="https://via.placeholder.com/220x120/2563EB/FFFFFF?text=Card" alt="卡片图" style="border-radius: 6px; width: 100%;" />
+  <h3 style="margin: 0.75rem 0 0.25rem;">卡片标题</h3>
+  <p style="margin: 0; color: #475569;">这是一张简单卡片。</p>
+</div>`,
+      list: `<ul>
+  <li><a href="#">首页</a></li>
+  <li><a href="#">文章</a></li>
+  <li><a href="#">关于</a></li>
+</ul>`,
+      nested: `<div style="padding: 1rem; background: #F3E8FF; border-radius: 10px;">
+  <p>外层容器里有一个 <span style="color: #7C3AED;">紫色高亮</span> 的单词。</p>
+  <div style="padding: 0.75rem; background: #FFFFFF; border-radius: 8px; margin-top: 0.5rem;">
+    <strong>内层容器</strong> 嵌套在外层容器内部。
+  </div>
+</div>`
+    };
 
-    function initTroubleshooting() {
-      const container = document.getElementById('troubleshootingAccordion');
+    const defaultPlaygroundCode = `<div style="padding: 1rem; background: #E0F2FE; border-radius: 10px;">
+  <h2>欢迎来到嵌套实验室</h2>
+  <p>
+    这是一段文字，其中 <strong>这部分加粗</strong>，
+    <a href="#">这是一个链接</a>。
+  </p>
+  <img src="https://via.placeholder.com/120x80/2563EB/FFFFFF?text=HTML" alt="示例图片" style="border-radius: 6px;" />
+</div>`;
 
-      troubleshootingItems.forEach((item, index) => {
-        const div = document.createElement('div');
-        div.className = 'accordion-item';
-        div.innerHTML = `
-          <button class="accordion-header" aria-expanded="false" aria-controls="trouble-body-${index}">
-            <span>${item.title}</span>
-            <span class="accordion-icon" aria-hidden="true">▼</span>
-          </button>
-          <div class="accordion-body" id="trouble-body-${index}">
-            ${item.content}
-          </div>
-        `;
+    function insertAtCursor(input, text) {
+      const start = input.selectionStart;
+      const end = input.selectionEnd;
+      const before = input.value.substring(0, start);
+      const after = input.value.substring(end);
+      input.value = before + text + after;
+      input.selectionStart = input.selectionEnd = start + text.length;
+      input.focus();
+      input.dispatchEvent(new Event('input'));
+    }
 
-        const header = div.querySelector('.accordion-header');
-        header.addEventListener('click', () => {
-          const isOpen = div.classList.contains('open');
-          container.querySelectorAll('.accordion-item').forEach(i => {
-            i.classList.remove('open');
-            i.querySelector('.accordion-header').setAttribute('aria-expanded', 'false');
-          });
-          if (!isOpen) {
-            div.classList.add('open');
-            header.setAttribute('aria-expanded', 'true');
-            markSectionComplete('troubleshooting');
+    function checkHtmlStructure(html) {
+      // 简单正则检查：未闭合标签、交叉嵌套
+      const voidTags = new Set(['area','base','br','col','embed','hr','img','input','link','meta','param','source','track','wbr']);
+      const tagPattern = /<\/?([a-zA-Z0-9]+)[^>]*?>/g;
+      const stack = [];
+      const seen = [];
+      let match;
+
+      while ((match = tagPattern.exec(html)) !== null) {
+        const full = match[0];
+        const name = match[1].toLowerCase();
+        if (voidTags.has(name)) continue;
+
+        if (full.startsWith('</')) {
+          const last = stack[stack.length - 1];
+          if (last && last.name === name) {
+            stack.pop();
+          } else if (stack.some(t => t.name === name)) {
+            return { status: 'err', message: '检测到标签交叉嵌套' };
           }
-        });
+        } else {
+          stack.push({ name, full });
+        }
+        seen.push({ name, full });
+      }
 
-        container.appendChild(div);
+      if (stack.length > 0) {
+        return { status: 'warn', message: '检测到未闭合标签' };
+      }
+      return { status: 'ok', message: '结构正常' };
+    }
+
+    function initPlayground() {
+      const input = document.getElementById('htmlInput');
+      const preview = document.getElementById('livePreview');
+      const resetBtn = document.getElementById('resetPlayground');
+      const exportBtn = document.getElementById('exportPlayground');
+      const exampleSelect = document.getElementById('exampleSelect');
+      const statusEl = document.getElementById('playgroundStatus');
+
+      input.value = defaultPlaygroundCode;
+
+      const update = debounce(() => {
+        preview.innerHTML = input.value;
+        const check = checkHtmlStructure(input.value);
+        statusEl.className = 'status-badge ' + check.status;
+        statusEl.textContent = check.message;
+        markSectionComplete('playground');
+      }, 120);
+
+      input.addEventListener('input', update);
+      update();
+
+      resetBtn.addEventListener('click', () => {
+        input.value = defaultPlaygroundCode;
+        exampleSelect.value = '';
+        update();
+      });
+
+      exportBtn.addEventListener('click', () => copyText(input.value));
+
+      exampleSelect.addEventListener('change', () => {
+        const key = exampleSelect.value;
+        if (examples[key]) {
+          input.value = examples[key];
+          update();
+        }
+      });
+
+      document.querySelectorAll('.tool-btn[data-insert]').forEach(btn => {
+        btn.addEventListener('click', () => {
+          const tag = btn.dataset.insert;
+          const voidTags = ['img', 'br', 'hr', 'input'];
+          const snippet = voidTags.includes(tag)
+            ? `<${tag} src="" alt="" />`
+            : `<${tag}></${tag}>`;
+          insertAtCursor(input, snippet);
+        });
       });
     }
 
-    // === 测验 ===
-    const quizData = [
+    // === 常见错误 ===
+    const mistakes = [
       {
-        question: '为什么必须把 HTML 文件重命名为 index.html？',
-        options: [
-          '因为 GitHub 只认识这个名字',
-          '因为 index.html 是 GitHub Pages 默认的网站入口文件',
-          '因为浏览器只能打开 index.html',
-          '因为 git 只跟踪 index.html'
-        ],
-        correct: 1,
-        explain: 'GitHub Pages 默认会把仓库根目录的 index.html 作为首页返回给访问者。'
+        title: '标签没有正确闭合',
+        severity: 'error',
+        wrong: '<p>这是一段文字\n<p>这是另一段',
+        right: '<p>这是一段文字</p>\n<p>这是另一段</p>',
+        explain: '每个开标签都需要对应的闭标签（自闭合标签除外），否则浏览器可能无法正确解析结构。',
+        why: '未闭合的段落会让浏览器把后续内容都归入同一个段落，导致间距和样式异常。'
       },
       {
-        question: 'git init 命令的作用是什么？',
-        options: [
-          '把代码上传到 GitHub',
-          '创建一个新的 Git 仓库，开始版本控制',
-          '删除所有文件',
-          '安装 Git 软件'
-        ],
-        correct: 1,
-        explain: 'git init 在当前目录初始化一个本地 Git 仓库，让 git 开始跟踪文件变更。'
+        title: '块级元素错误地嵌套在行内元素里',
+        severity: 'warning',
+        wrong: '<span>\n  <div>这是一个块级内容</div>\n</span>',
+        right: '<div>\n  <span>这是一个行内内容</span>\n</div>',
+        explain: '<div> 是块级元素，<span> 是行内元素。块级元素不应放在行内元素内部。',
+        why: 'HTML 规范不允许块级元素出现在行内元素内部；浏览器会自动拆分行内元素，产生不可预期的 DOM。'
       },
       {
-        question: 'git remote add origin 这行命令做了什么？',
-        options: [
-          '创建本地文件夹',
-          '把本地仓库和 GitHub 上的远程仓库关联起来',
-          '删除远程仓库',
-          '安装 GitHub CLI'
-        ],
-        correct: 1,
-        explain: 'origin 是远程仓库的别名，这行命令告诉本地 git：GitHub 上的那个仓库就是我们的远程仓库。'
-      },
-      {
-        question: 'GitHub Pages 的 Source 应该设置成什么？',
-        options: [
-          'GitHub Actions',
-          'Deploy from a branch',
-          'Docker',
-          'Netlify'
-        ],
-        correct: 1,
-        explain: '对于静态 HTML 页面，选择 Deploy from a branch，然后指定 main 分支和 / (root) 文件夹即可。'
-      },
-      {
-        question: '开启 Pages 后，通常要等多久才能通过网址访问？',
-        options: [
-          '立刻',
-          '1～2 分钟',
-          '24 小时',
-          '需要手动重启服务器'
-        ],
-        correct: 1,
-        explain: 'GitHub Pages 需要一点时间构建和部署，通常 1～2 分钟内就能访问。'
+        title: '标签交叉嵌套',
+        severity: 'critical',
+        wrong: '<p><strong>加粗开始</p></strong>',
+        right: '<p><strong>加粗开始</strong></p>',
+        explain: '子元素必须在父元素内部完全闭合，不能“交叉”闭合。',
+        why: '交叉嵌套是无效的 HTML，浏览器会尝试“自动纠错”，但不同浏览器处理结果可能不同，难以预测。'
       }
     ];
+
+    function annotateWrongCode(code, index) {
+      // 对特定错误做视觉标注
+      if (index === 0) {
+        return escapeHtml(code).replace(/(&lt;p&gt;.*?)(?=&lt;\/?p&gt;|$)/gs, '<span class="annotated">$1</span>');
+      }
+      if (index === 1) {
+        return escapeHtml(code).replace(/(&lt;div&gt;.*?&lt;\/div&gt;)/gs, '<span class="annotated">$1</span>');
+      }
+      if (index === 2) {
+        return escapeHtml(code)
+          .replace(/(&lt;\/p&gt;)/, '<span class="annotated">$1</span>')
+          .replace(/(&lt;\/strong&gt;)/, '<span class="annotated">$1</span>');
+      }
+      return escapeHtml(code);
+    }
+
+    function initMistakes() {
+      const grid = document.getElementById('mistakeGrid');
+
+      mistakes.forEach((item, index) => {
+        const card = document.createElement('div');
+        card.className = 'mistake-card';
+        card.innerHTML = `
+          <div class="mistake-header">
+            <h3 class="mistake-title">${escapeHtml(item.title)}</h3>
+            <span class="severity ${item.severity}">${{critical:'严重', error:'错误', warning:'不推荐'}[item.severity]}</span>
+          </div>
+          <p style="margin: 0; color: var(--g700); font-size: 14px;">${escapeHtml(item.explain)}</p>
+          <div class="compare-grid">
+            <div class="compare-box wrong">
+              <div class="compare-label">❌ 错误写法</div>
+              <pre style="margin: 0;"><code>${annotateWrongCode(item.wrong, index)}</code></pre>
+            </div>
+            <div class="compare-box right">
+              <div class="compare-label">✅ 正确写法</div>
+              <pre style="margin: 0;"><code>${highlightCode(item.right)}</code></pre>
+            </div>
+          </div>
+          <div class="mistake-why">
+            <div class="collapsible">
+              <button class="collapsible-header" aria-expanded="false" style="padding-left: 0; padding-right: 0;">
+                <span style="font-size: 13px; color: var(--clay);">为什么重要？</span>
+                <span class="collapsible-icon" aria-hidden="true">▼</span>
+              </button>
+              <div class="collapsible-body">
+                <div class="collapsible-inner" style="padding-left: 0; padding-right: 0; color: var(--g700); font-size: 14px;">
+                  ${escapeHtml(item.why)}
+                  ${index === 2 ? `<svg class="svg-diagram" viewBox="0 0 280 120" style="margin-top: 10px; max-width: 100%;">
+                    <text x="70" y="20" text-anchor="middle" font-size="12" fill="var(--success)" font-family="var(--sans)" font-weight="700">合法：完全嵌套</text>
+                    <rect x="20" y="32" width="100" height="76" rx="6" fill="var(--success-bg)" stroke="var(--success)" stroke-width="1.5"/>
+                    <text x="70" y="55" text-anchor="middle" font-size="11" fill="var(--slate)">&lt;p&gt;</text>
+                    <rect x="36" y="62" width="68" height="36" rx="4" fill="var(--paper)" stroke="var(--success)" stroke-width="1.5"/>
+                    <text x="70" y="84" text-anchor="middle" font-size="10" fill="var(--slate)">&lt;strong&gt;</text>
+
+                    <text x="210" y="20" text-anchor="middle" font-size="12" fill="var(--error)" font-family="var(--sans)" font-weight="700">非法：交叉嵌套</text>
+                    <rect x="160" y="32" width="100" height="36" rx="6" fill="var(--error-bg)" stroke="var(--error)" stroke-width="1.5"/>
+                    <text x="210" y="55" text-anchor="middle" font-size="11" fill="var(--slate)">&lt;p&gt;...&lt;/p&gt;</text>
+                    <rect x="160" y="72" width="100" height="36" rx="6" fill="var(--error-bg)" stroke="var(--error)" stroke-width="1.5"/>
+                    <text x="210" y="95" text-anchor="middle" font-size="11" fill="var(--slate)">&lt;strong&gt;...&lt;/strong&gt;</text>
+                  </svg>` : ''}
+                </div>
+              </div>
+            </div>
+          </div>
+        `;
+        grid.appendChild(card);
+      });
+
+      // 绑定折叠
+      grid.querySelectorAll('.collapsible').forEach(panel => {
+        const header = panel.querySelector('.collapsible-header');
+        header.addEventListener('click', () => {
+          const isOpen = panel.classList.toggle('open');
+          header.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+          markSectionComplete('mistakes');
+        });
+      });
+    }
+
+    // === 即时测验 ===
+    const glossary = {
+      '自闭合标签': '不需要闭合标签的元素，如 &lt;img&gt;、&lt;br&gt;、&lt;input&gt;，它们本身不包裹内容。',
+      '块级元素': '独占一行的元素，如 &lt;div&gt;、&lt;p&gt;、&lt;h1&gt;，可以包含行内或块级内容（需符合规范）。',
+      '行内元素': '不独占一行的元素，如 &lt;span&gt;、&lt;a&gt;、&lt;strong&gt;，通常只包含文本或其他行内元素。',
+      '交叉嵌套': '子标签的闭合顺序与开启顺序不一致，例如 &lt;p&gt;&lt;strong&gt;...&lt;/p&gt;&lt;/strong&gt;。'
+    };
+
+    const quizData = [
+      {
+        question: '下面哪个标签用于定义段落？',
+        options: ['<div>', '<p>', '<span>', '<h1>'],
+        correct: 1,
+        explain: '<p> 是 paragraph（段落）的缩写，专门用于定义段落。'
+      },
+      {
+        question: '以下哪种嵌套方式是正确的？',
+        options: [
+          '<p><strong>文字</p></strong>',
+          '<span><div>文字</div></span>',
+          '<div><p>文字</p></div>',
+          '<p>文字<br></p>（br 是自闭合标签，但题目问的是“嵌套”）'
+        ],
+        correct: 2,
+        explain: '<div> 内嵌套 <p> 是正确的。选项 A 是交叉闭合错误；选项 B 把块级元素放在行内元素内，不推荐。'
+      },
+      {
+        question: '<img> 标签为什么不需要闭标签？',
+        options: [
+          '因为它是一个错误设计',
+          '因为它是自闭合标签，本身不包含内容',
+          '因为浏览器会自动补全',
+          '因为图片不是 HTML 元素'
+        ],
+        correct: 1,
+        explain: '<img> 是自闭合标签（void element），它通过属性引入外部资源，不需要包裹内容。'
+      }
+    ];
+
+    function renderGlossaryText(text) {
+      let html = escapeHtml(text);
+      Object.keys(glossary).forEach(term => {
+        const escaped = escapeHtml(term);
+        html = html.replace(new RegExp(escaped, 'g'), `<span class="glossary-term" data-term="${term}">${escaped}</span>`);
+      });
+      return html;
+    }
+
+    function initTooltip() {
+      const tooltip = document.getElementById('tooltip');
+      document.body.addEventListener('mouseover', e => {
+        const term = e.target.closest('.glossary-term');
+        if (!term) return;
+        const text = glossary[term.dataset.term];
+        if (!text) return;
+        tooltip.innerHTML = text;
+        tooltip.classList.add('show');
+        const rect = term.getBoundingClientRect();
+        const ttRect = tooltip.getBoundingClientRect();
+        let left = rect.left + (rect.width - ttRect.width) / 2;
+        let top = rect.top - ttRect.height - 8;
+        if (left < 8) left = 8;
+        if (left + ttRect.width > window.innerWidth - 8) left = window.innerWidth - ttRect.width - 8;
+        if (top < 8) top = rect.bottom + 8;
+        tooltip.style.left = left + 'px';
+        tooltip.style.top = top + 'px';
+      });
+      document.body.addEventListener('mouseout', e => {
+        if (e.target.closest('.glossary-term')) {
+          tooltip.classList.remove('show');
+        }
+      });
+    }
 
     function initQuiz() {
       const container = document.getElementById('quizContainer');
       const scoreBoard = document.getElementById('scoreBoard');
+      const dots = document.querySelectorAll('#quizProgress .dot');
+      const summary = document.getElementById('quizSummary');
 
       function updateScore() {
         scoreBoard.textContent = `得分：${state.score} / ${quizData.length}`;
@@ -1153,18 +1646,19 @@ git push -u origin main</code></pre>
       quizData.forEach((q, qIndex) => {
         const questionEl = document.createElement('div');
         questionEl.className = 'question';
+        questionEl.dataset.index = qIndex;
 
         const optionsHtml = q.options.map((opt, oIndex) => `
           <div class="option" data-oindex="${oIndex}" role="button" tabindex="0">
-            <span>${String.fromCharCode(65 + oIndex)}.</span>
-            <span>${opt}</span>
+            <span class="option-key">${String.fromCharCode(65 + oIndex)}</span>
+            <span>${renderGlossaryText(opt)}</span>
           </div>
         `).join('');
 
         questionEl.innerHTML = `
-          <div class="question-text">${qIndex + 1}. ${q.question}</div>
+          <div class="question-text">${qIndex + 1}. ${renderGlossaryText(q.question)}</div>
           <div class="options">${optionsHtml}</div>
-          <div class="feedback" id="quiz-feedback-${qIndex}"></div>
+          <div class="feedback" id="feedback-${qIndex}" role="status"></div>
         `;
 
         const options = questionEl.querySelectorAll('.option');
@@ -1177,20 +1671,24 @@ git push -u origin main</code></pre>
 
             options.forEach(o => o.classList.add('disabled'));
             option.classList.add(isCorrect ? 'correct' : 'wrong');
-            if (!isCorrect) options[q.correct].classList.add('correct');
 
             if (isCorrect) state.score++;
+            else options[q.correct].classList.add('correct');
+
             state.answeredQuestions.add(qIndex);
             updateScore();
 
-            const feedback = document.getElementById(`quiz-feedback-${qIndex}`);
+            dots[qIndex].classList.add(isCorrect ? 'correct' : 'wrong');
+
+            const feedback = document.getElementById(`feedback-${qIndex}`);
             feedback.innerHTML = isCorrect
-              ? `<strong style="color: var(--success);">✅ 正确！</strong> ${q.explain}`
-              : `<strong style="color: var(--error);">❌ 错误。</strong> ${q.explain}`;
-            feedback.classList.add('show');
+              ? `<strong>✅ 回答正确！</strong> ${escapeHtml(q.explain)}`
+              : `<strong>❌ 回答错误。</strong> ${escapeHtml(q.explain)}`;
+            feedback.className = 'feedback show ' + (isCorrect ? 'correct' : 'wrong');
 
             if (state.answeredQuestions.size === quizData.length) {
               markSectionComplete('quiz');
+              showQuizSummary();
             }
           }
 
@@ -1207,106 +1705,194 @@ git push -u origin main</code></pre>
       });
 
       updateScore();
+
+      function showQuizSummary() {
+        const pct = Math.round((state.score / quizData.length) * 100);
+        let level, label, msg;
+        if (pct === 100) { level = 'excellent'; label = '优秀'; msg = '全对！你已经掌握了 HTML 嵌套的基础。'; }
+        else if (pct >= 60) { level = 'good'; label = '良好'; msg = '大部分正确，再针对错题复习一下即可。'; }
+        else { level = 'review'; label = '需复习'; msg = '建议回到常见错误章节重新看一下。'; }
+
+        const wrongIndexes = [];
+        quizData.forEach((q, i) => {
+          if (!document.querySelector(`.question[data-index="${i}"] .option.correct:not(.wrong)`)) {
+            // 简单判断是否答对：如果该题没有用户选中的正确选项
+            const userCorrect = document.querySelector(`.question[data-index="${i}"] .option.correct.wrong`) === null
+              && document.querySelector(`.question[data-index="${i}"] .option.correct`) !== null;
+            if (!userCorrect) wrongIndexes.push(i);
+          }
+        });
+
+        summary.className = 'quiz-summary show ' + level;
+        summary.innerHTML = `
+          <strong style="font-size: 1.1rem;">${label} — ${state.score} / ${quizData.length}（${pct}%）</strong>
+          <p style="margin: 6px 0 0;">${msg}</p>
+          ${wrongIndexes.length ? `<p style="margin-top: 10px; font-size: 13px;">错题：${wrongIndexes.map(i => `<a href="#quiz" style="color: var(--clay);" onclick="document.querySelector('.question[data-index=\\'${i}\\']').scrollIntoView({behavior:'smooth', block:'center'})">第 ${i+1} 题</a>`).join('、')}</p>` : ''}
+          <p style="margin-top: 10px; font-size: 13px;"><a href="#mistakes" style="color: var(--clay);">← 返回常见错误复习</a></p>
+        `;
+      }
     }
 
-    // === 模拟演练 ===
-    const drillOrder = [
-      'mkdir html-learning',
-      'cd html-learning',
-      'cp ../page.html index.html',
-      'git init',
-      'git config user.name "Your Name"',
-      'git config user.email "you@example.com"',
-      'git add .',
-      'git commit -m "Initial commit"',
-      'git remote add origin https://github.com/ZXVL123/html-learning.git',
-      'git branch -M main',
-      'git push -u origin main'
+    // === 修复挑战 ===
+    const challenges = [
+      {
+        title: '产品卡片',
+        code: `<div>
+  <h2>我们的产品</h2>
+  <p>了解更多请访问官网。
+</div>
+<img src="https://via.placeholder.com/200x120/2563EB/FFFFFF?text=Product" alt="产品图">
+<div>`,
+        target: `<div>
+  <h2>我们的产品</h2>
+  <p>了解更多请访问官网。</p>
+  <img src="https://via.placeholder.com/200x120/2563EB/FFFFFF?text=Product" alt="产品图">
+</div>`,
+        hints: [
+          '检查 &lt;p&gt; 标签是否闭合。',
+          '图片应该放在哪个容器里？',
+          '注意 &lt;div&gt; 开标签和闭标签的数量。'
+        ]
+      },
+      {
+        title: '作者简介',
+        code: `<div class="author">
+  <img src="https://via.placeholder.com/80x80/10B981/FFFFFF?text=A" alt="头像">
+  <p>作者：<strong>小王</p></strong>
+  <span>前端开发者</span>
+</div>`,
+        target: `<div class="author">
+  <img src="https://via.placeholder.com/80x80/10B981/FFFFFF?text=A" alt="头像">
+  <p>作者：<strong>小王</strong></p>
+  <span>前端开发者</span>
+</div>`,
+        hints: [
+          '&lt;strong&gt; 和 &lt;/p&gt; 的闭合顺序是否正确？',
+          '交叉嵌套会让浏览器无法正确解析。',
+          '确保子元素在父元素内部完全闭合。'
+        ]
+      },
+      {
+        title: '导航链接',
+        code: `<nav>
+  <span>
+    <a href="#">首页</a>
+    <div><a href="#">分类</a></div>
+    <a href="#">关于</a>
+  </span>
+</nav>`,
+        target: `<nav>
+  <a href="#">首页</a>
+  <a href="#">分类</a>
+  <a href="#">关于</a>
+</nav>`,
+        hints: [
+          '&lt;div&gt; 能放在 &lt;span&gt; 里面吗？',
+          '导航里的链接可以直接放在 &lt;nav&gt; 中。',
+          '去掉多余的 &lt;span&gt; 和 &lt;div&gt;。'
+        ]
+      }
     ];
 
-    let currentDrillOrder = [];
+    function normalizeHtml(html) {
+      return html
+        .replace(/<!--[\s\S]*?-->/g, '')
+        .replace(/\s+/g, ' ')
+        .replace(/\s*</g, '<')
+        .replace(/>\s*/g, '>')
+        .trim();
+    }
 
-    function initDrill() {
-      const container = document.getElementById('drillCommands');
-      const checkBtn = document.getElementById('checkDrill');
-      const resetBtn = document.getElementById('resetDrill');
-      const result = document.getElementById('drillResult');
+    function initChallenge() {
+      const input = document.getElementById('challengeInput');
+      const checkBtn = document.getElementById('checkChallenge');
+      const resetBtn = document.getElementById('resetChallenge');
+      const nextBtn = document.getElementById('nextChallenge');
+      const result = document.getElementById('challengeResult');
+      const compare = document.getElementById('solutionCompare');
+      const hintList = document.getElementById('hintList');
 
-      function renderDrill() {
-        container.innerHTML = '';
-        currentDrillOrder.forEach((cmd, index) => {
-          const item = document.createElement('div');
-          item.className = 'drill-item';
-          item.setAttribute('draggable', 'true');
-          item.dataset.cmd = cmd;
-          item.innerHTML = `<span style="color: var(--muted); margin-right: 0.5rem;">${index + 1}.</span>${escapeHtml(cmd)}
-          `;
+      function loadChallenge(index) {
+        const c = challenges[index];
+        input.value = c.code;
+        result.className = 'challenge-result';
+        result.textContent = '';
+        result.style.display = 'none';
+        compare.classList.remove('show');
+        nextBtn.style.display = 'none';
 
-          item.addEventListener('dragstart', () => item.classList.add('dragging'));
-          item.addEventListener('dragend', () => item.classList.remove('dragging'));
-
-          container.appendChild(item);
+        hintList.innerHTML = '';
+        c.hints.forEach((hint, i) => {
+          const btn = document.createElement('button');
+          btn.className = 'btn small secondary';
+          btn.textContent = `提示 ${i + 1}`;
+          btn.style.alignSelf = 'flex-start';
+          const p = document.createElement('p');
+          p.style.margin = '0';
+          p.style.color = 'var(--g700)';
+          p.style.fontSize = '13px';
+          p.style.display = 'none';
+          p.innerHTML = `💡 ${hint}`;
+          btn.addEventListener('click', () => {
+            p.style.display = 'block';
+            btn.disabled = true;
+            btn.style.opacity = '0.6';
+          });
+          const wrap = document.createElement('div');
+          wrap.appendChild(btn);
+          wrap.appendChild(p);
+          hintList.appendChild(wrap);
         });
       }
 
-      function shuffle(array) {
-        const arr = [...array];
-        for (let i = arr.length - 1; i > 0; i--) {
-          const j = Math.floor(Math.random() * (i + 1));
-          [arr[i], arr[j]] = [arr[j], arr[i]];
-        }
-        return arr;
-      }
-
-      currentDrillOrder = shuffle(drillOrder);
-      renderDrill();
-
-      container.addEventListener('dragover', (e) => {
-        e.preventDefault();
-        const afterElement = getDragAfterElement(container, e.clientY);
-        const draggable = document.querySelector('.dragging');
-        if (afterElement == null) {
-          container.appendChild(draggable);
-        } else {
-          container.insertBefore(draggable, afterElement);
-        }
-
-        // 更新 currentDrillOrder
-        currentDrillOrder = Array.from(container.querySelectorAll('.drill-item')).map(el => el.dataset.cmd);
-      });
-
-      function getDragAfterElement(container, y) {
-        const draggableElements = [...container.querySelectorAll('.drill-item:not(.dragging)')];
-        return draggableElements.reduce((closest, child) => {
-          const box = child.getBoundingClientRect();
-          const offset = y - box.top - box.height / 2;
-          if (offset < 0 && offset > closest.offset) {
-            return { offset: offset, element: child };
-          }
-          return closest;
-        }, { offset: Number.NEGATIVE_INFINITY }).element;
-      }
+      loadChallenge(state.currentChallenge);
 
       checkBtn.addEventListener('click', () => {
-        const isCorrect = JSON.stringify(currentDrillOrder) === JSON.stringify(drillOrder);
-        result.className = 'drill-result show ' + (isCorrect ? 'success' : 'error');
-        if (isCorrect) {
-          result.innerHTML = '<strong>🎉 完全正确！</strong> 你已经掌握了部署流程。';
-          markSectionComplete('drill');
+        const c = challenges[state.currentChallenge];
+        const normalized = normalizeHtml(input.value);
+        const target = normalizeHtml(c.target);
+
+        if (normalized === target) {
+          result.textContent = '🎉 太棒了！标签已正确嵌套并闭合。';
+          result.className = 'challenge-result show success';
+          result.style.display = 'block';
+          markSectionComplete('challenge');
+
+          document.getElementById('userSolution').innerHTML = highlightCode(input.value);
+          document.getElementById('targetSolution').innerHTML = highlightCode(c.target);
+          compare.classList.add('show');
+          nextBtn.style.display = 'inline-flex';
         } else {
-          result.innerHTML = '<strong>❌ 顺序还不对。</strong> 再想想：先创建目录，再初始化 git，然后提交，最后推送。';
+          const hasClosingP = /<\/p>/.test(input.value);
+          const imgInsideDiv = /<div[\s\S]*>.*<img[\s\S]*?<\/div>/.test(input.value);
+          const noCross = !(/<p>.*<strong>.*<\/p>.*<\/strong>/s.test(input.value) || /<strong>.*<p>.*<\/strong>.*<\/p>/s.test(input.value));
+
+          if (!hasClosingP && state.currentChallenge === 0) {
+            result.textContent = '提示：\<p\> 标签还没有正确闭合，请加上 \</p\>。';
+          } else if (!imgInsideDiv && state.currentChallenge === 0) {
+            result.textContent = '提示：图片应该放在同一个 \<div\> 容器内部。';
+          } else if (!noCross && state.currentChallenge === 1) {
+            result.textContent = '提示：检测到交叉嵌套，请检查 \<strong\> 和 \</p\> 的顺序。';
+          } else {
+            result.textContent = '接近了！请再检查一下标签的嵌套和闭合顺序。';
+          }
+          result.className = 'challenge-result show error';
+          result.style.display = 'block';
         }
       });
 
       resetBtn.addEventListener('click', () => {
-        currentDrillOrder = shuffle(drillOrder);
-        renderDrill();
-        result.className = 'drill-result';
-        result.innerHTML = '';
+        loadChallenge(state.currentChallenge);
+      });
+
+      nextBtn.addEventListener('click', () => {
+        state.currentChallenge = (state.currentChallenge + 1) % challenges.length;
+        loadChallenge(state.currentChallenge);
+        document.getElementById('challenge').scrollIntoView({ behavior: 'smooth', block: 'start' });
       });
     }
 
-    // === 滚动监听进度 ===
+    // === 滚动进度 ===
     function initScrollProgress() {
       window.addEventListener('scroll', debounce(() => {
         const scrollTop = window.scrollY;
@@ -1318,13 +1904,26 @@ git push -u origin main</code></pre>
       }, 50));
     }
 
+    // === 重置全部 ===
+    document.getElementById('resetAll').addEventListener('click', () => {
+      state.score = 0;
+      state.answeredQuestions.clear();
+      state.completedSections.clear();
+      state.currentChallenge = 0;
+      updateProgress();
+      location.reload();
+    });
+
     // === 初始化 ===
     document.addEventListener('DOMContentLoaded', () => {
-      initSteps();
-      initCommandReference();
-      initTroubleshooting();
+      initTOC();
+      initCollapsibles();
+      initTagCards();
+      initPlayground();
+      initMistakes();
       initQuiz();
-      initDrill();
+      initChallenge();
+      initTooltip();
       initScrollProgress();
       updateProgress();
     });
