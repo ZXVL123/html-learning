@@ -1,0 +1,1027 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>HTML 标签与嵌套 - 交互式学习</title>
+  <style>
+    /* === CSS 变量与全局重置 === */
+    :root {
+      --bg: #f8fafc;
+      --card-bg: #ffffff;
+      --text: #1e293b;
+      --muted: #64748b;
+      --accent: #2563eb;
+      --accent-light: #dbeafe;
+      --success: #10b981;
+      --success-bg: #d1fae5;
+      --error: #ef4444;
+      --error-bg: #fee2e2;
+      --warning: #f59e0b;
+      --radius: 12px;
+      --shadow: 0 4px 6px -1px rgba(0,0,0,0.1), 0 2px 4px -2px rgba(0,0,0,0.1);
+      --shadow-hover: 0 10px 15px -3px rgba(0,0,0,0.1), 0 4px 6px -4px rgba(0,0,0,0.1);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+    }
+
+    /* === 进度条 === */
+    .progress-container {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 4px;
+      background: #e2e8f0;
+      z-index: 1000;
+    }
+
+    .progress-bar {
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, var(--accent), #7c3aed);
+      transition: width 0.2s ease;
+    }
+
+    /* === 布局容器 === */
+    .container {
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 0 1.5rem;
+    }
+
+    header {
+      padding: 4rem 0 2rem;
+      text-align: center;
+    }
+
+    header h1 {
+      font-size: clamp(2rem, 5vw, 3rem);
+      margin: 0 0 0.75rem;
+      letter-spacing: -0.02em;
+    }
+
+    header p {
+      color: var(--muted);
+      font-size: 1.125rem;
+      max-width: 600px;
+      margin: 0 auto;
+    }
+
+    main {
+      padding-bottom: 4rem;
+    }
+
+    section {
+      margin-bottom: 2.5rem;
+    }
+
+    .section-title {
+      font-size: 1.5rem;
+      margin: 0 0 1rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .section-title .icon {
+      width: 32px;
+      height: 32px;
+      background: var(--accent-light);
+      color: var(--accent);
+      border-radius: 8px;
+      display: grid;
+      place-items: center;
+      font-size: 1rem;
+    }
+
+    .card {
+      background: var(--card-bg);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 1.5rem;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+
+    .card:hover {
+      box-shadow: var(--shadow-hover);
+    }
+
+    /* === 标签卡片 === */
+    .tag-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+      gap: 1rem;
+    }
+
+    .tag-card {
+      background: var(--card-bg);
+      border: 2px solid #e2e8f0;
+      border-radius: var(--radius);
+      padding: 1.25rem;
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.2s;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .tag-card:hover {
+      border-color: var(--accent);
+      transform: translateY(-3px);
+      box-shadow: var(--shadow-hover);
+    }
+
+    .tag-card.active {
+      border-color: var(--accent);
+      background: var(--accent-light);
+    }
+
+    .tag-card .tag-name {
+      font-family: "SF Mono", Monaco, monospace;
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: var(--accent);
+      margin-bottom: 0.25rem;
+    }
+
+    .tag-card .tag-desc {
+      font-size: 0.875rem;
+      color: var(--muted);
+    }
+
+    .tag-detail {
+      display: none;
+      margin-top: 1.5rem;
+      padding: 1.25rem;
+      background: #f1f5f9;
+      border-radius: var(--radius);
+      border-left: 4px solid var(--accent);
+    }
+
+    .tag-detail.show {
+      display: block;
+      animation: fadeIn 0.3s ease;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(-10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .tag-detail code {
+      background: #e2e8f0;
+      padding: 0.125rem 0.375rem;
+      border-radius: 4px;
+      font-family: "SF Mono", Monaco, monospace;
+      font-size: 0.9em;
+    }
+
+    .tag-example {
+      margin-top: 0.75rem;
+      padding: 0.75rem;
+      background: white;
+      border: 1px solid #cbd5e1;
+      border-radius: 8px;
+      font-family: "SF Mono", Monaco, monospace;
+      font-size: 0.875rem;
+      overflow-x: auto;
+    }
+
+    /* === 嵌套实验室 === */
+    .playground {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+      min-height: 320px;
+    }
+
+    .editor-pane, .preview-pane {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .pane-label {
+      font-size: 0.875rem;
+      font-weight: 600;
+      color: var(--muted);
+      margin-bottom: 0.5rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .editor-pane textarea {
+      flex: 1;
+      width: 100%;
+      min-height: 260px;
+      padding: 1rem;
+      border: 1px solid #cbd5e1;
+      border-radius: 8px;
+      font-family: "SF Mono", Monaco, monospace;
+      font-size: 0.875rem;
+      line-height: 1.5;
+      resize: vertical;
+      background: #0f172a;
+      color: #e2e8f0;
+    }
+
+    .preview-pane .preview-box {
+      flex: 1;
+      min-height: 260px;
+      padding: 1rem;
+      border: 1px solid #cbd5e1;
+      border-radius: 8px;
+      background: white;
+      overflow: auto;
+    }
+
+    .btn {
+      padding: 0.5rem 1rem;
+      border: none;
+      border-radius: 8px;
+      background: var(--accent);
+      color: white;
+      font-size: 0.875rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: background 0.15s, transform 0.1s;
+    }
+
+    .btn:hover {
+      background: #1d4ed8;
+    }
+
+    .btn:active {
+      transform: scale(0.98);
+    }
+
+    .btn.secondary {
+      background: #e2e8f0;
+      color: var(--text);
+    }
+
+    .btn.secondary:hover {
+      background: #cbd5e1;
+    }
+
+    .btn.small {
+      padding: 0.375rem 0.75rem;
+      font-size: 0.8125rem;
+    }
+
+    /* === 手风琴 === */
+    .accordion-item {
+      margin-bottom: 0.75rem;
+      border: 1px solid #e2e8f0;
+      border-radius: var(--radius);
+      overflow: hidden;
+    }
+
+    .accordion-header {
+      width: 100%;
+      padding: 1rem 1.25rem;
+      background: var(--card-bg);
+      border: none;
+      text-align: left;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .accordion-header:hover {
+      background: #f8fafc;
+    }
+
+    .accordion-icon {
+      transition: transform 0.2s;
+      color: var(--muted);
+    }
+
+    .accordion-item.open .accordion-icon {
+      transform: rotate(180deg);
+    }
+
+    .accordion-body {
+      display: none;
+      padding: 0 1.25rem 1.25rem;
+      background: var(--card-bg);
+    }
+
+    .accordion-item.open .accordion-body {
+      display: block;
+      animation: fadeIn 0.3s ease;
+    }
+
+    .compare-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+      margin-top: 0.75rem;
+    }
+
+    .compare-box {
+      padding: 1rem;
+      border-radius: 8px;
+      font-family: "SF Mono", Monaco, monospace;
+      font-size: 0.8125rem;
+      overflow-x: auto;
+    }
+
+    .compare-box.wrong {
+      background: var(--error-bg);
+      border: 1px solid #fecaca;
+    }
+
+    .compare-box.right {
+      background: var(--success-bg);
+      border: 1px solid #a7f3d0;
+    }
+
+    .compare-label {
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+      font-family: system-ui, sans-serif;
+      font-size: 0.875rem;
+    }
+
+    .compare-box.wrong .compare-label { color: var(--error); }
+    .compare-box.right .compare-label { color: var(--success); }
+
+    /* === 测验 === */
+    .quiz-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1rem;
+    }
+
+    .score-board {
+      font-weight: 700;
+      color: var(--accent);
+      background: var(--accent-light);
+      padding: 0.375rem 0.875rem;
+      border-radius: 999px;
+    }
+
+    .question {
+      margin-bottom: 1.5rem;
+      padding-bottom: 1.5rem;
+      border-bottom: 1px solid #e2e8f0;
+    }
+
+    .question:last-child {
+      border-bottom: none;
+      margin-bottom: 0;
+      padding-bottom: 0;
+    }
+
+    .question-text {
+      font-weight: 600;
+      margin-bottom: 0.75rem;
+    }
+
+    .options {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+
+    .option {
+      padding: 0.75rem 1rem;
+      border: 1px solid #e2e8f0;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.15s;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .option:hover:not(.disabled) {
+      border-color: var(--accent);
+      background: #f8fafc;
+    }
+
+    .option.correct {
+      border-color: var(--success);
+      background: var(--success-bg);
+    }
+
+    .option.wrong {
+      border-color: var(--error);
+      background: var(--error-bg);
+    }
+
+    .option.disabled {
+      cursor: default;
+    }
+
+    .feedback {
+      margin-top: 0.5rem;
+      font-size: 0.875rem;
+      display: none;
+    }
+
+    .feedback.show {
+      display: block;
+    }
+
+    /* === 修复挑战 === */
+    .challenge-area textarea {
+      width: 100%;
+      min-height: 180px;
+      padding: 1rem;
+      border: 1px solid #cbd5e1;
+      border-radius: 8px;
+      font-family: "SF Mono", Monaco, monospace;
+      font-size: 0.875rem;
+      line-height: 1.5;
+      background: #0f172a;
+      color: #e2e8f0;
+      resize: vertical;
+    }
+
+    .challenge-actions {
+      display: flex;
+      gap: 0.75rem;
+      margin-top: 1rem;
+      flex-wrap: wrap;
+    }
+
+    .challenge-result {
+      margin-top: 1rem;
+      padding: 1rem;
+      border-radius: 8px;
+      display: none;
+    }
+
+    .challenge-result.show {
+      display: block;
+      animation: fadeIn 0.3s ease;
+    }
+
+    .challenge-result.success {
+      background: var(--success-bg);
+      border: 1px solid #a7f3d0;
+      color: #065f46;
+    }
+
+    .challenge-result.error {
+      background: var(--error-bg);
+      border: 1px solid #fecaca;
+      color: #991b1b;
+    }
+
+    /* === Footer === */
+    footer {
+      text-align: center;
+      padding: 2rem 0 3rem;
+      color: var(--muted);
+      font-size: 0.875rem;
+      border-top: 1px solid #e2e8f0;
+    }
+
+    /* === 响应式 === */
+    @media (max-width: 768px) {
+      .playground,
+      .compare-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .tag-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      header {
+        padding-top: 3rem;
+      }
+    }
+
+    /* === 辅助类 === */
+    .sr-only {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      border: 0;
+    }
+  </style>
+</head>
+<body>
+  <!-- 进度条 -->
+  <div class="progress-container" aria-hidden="true">
+    <div class="progress-bar" id="progressBar"></div>
+  </div>
+
+  <header>
+    <div class="container">
+      <h1>HTML 标签与嵌套</h1>
+      <p>通过动手实践理解 HTML 的基本结构：标签是什么、如何嵌套、常见错误有哪些。边玩边学，效率更高。</p>
+    </div>
+  </header>
+
+  <main class="container">
+    <!-- SECTION 1: 标签速览 -->
+    <section id="tags" data-section>
+      <h2 class="section-title">
+        <span class="icon" aria-hidden="true">🏷️</span>
+        标签速览
+      </h2>
+      <div class="tag-grid" id="tagGrid">
+        <!-- 卡片由 JS 生成 -->
+      </div>
+      <div class="tag-detail" id="tagDetail" role="region" aria-live="polite">
+        <!-- 详情由 JS 填充 -->
+      </div>
+    </section>
+
+    <!-- SECTION 2: 嵌套实验室 -->
+    <section id="playground" data-section>
+      <h2 class="section-title">
+        <span class="icon" aria-hidden="true">🧪</span>
+        嵌套实验室
+      </h2>
+      <div class="card">
+        <p style="margin-top: 0; color: var(--muted);">在左侧编辑器里修改 HTML，右侧会实时渲染结果。试着把 <code>&lt;strong&gt;</code> 放到 <code>&lt;p&gt;</code> 里面，或者添加一个链接。</p>
+        <div class="playground">
+          <div class="editor-pane">
+            <div class="pane-label">
+              <span>HTML 代码</span>
+              <button class="btn small secondary" id="resetPlayground">重置</button>
+            </div>
+            <textarea id="htmlInput" spellcheck="false" aria-label="HTML 编辑器"></textarea>
+          </div>
+          <div class="preview-pane">
+            <div class="pane-label">实时预览</div>
+            <div class="preview-box" id="livePreview"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION 3: 常见错误 -->
+    <section id="mistakes" data-section>
+      <h2 class="section-title">
+        <span class="icon" aria-hidden="true">⚠️</span>
+        常见错误
+      </h2>
+      <div class="card" id="mistakesAccordion">
+        <!-- 手风琴由 JS 生成 -->
+      </div>
+    </section>
+
+    <!-- SECTION 4: 即时测验 -->
+    <section id="quiz" data-section>
+      <h2 class="section-title">
+        <span class="icon" aria-hidden="true">📝</span>
+        即时测验
+      </h2>
+      <div class="card">
+        <div class="quiz-header">
+          <span>测试一下你掌握了多少</span>
+          <span class="score-board" id="scoreBoard">得分：0 / 3</span>
+        </div>
+        <div id="quizContainer">
+          <!-- 题目由 JS 生成 -->
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION 5: 修复挑战 -->
+    <section id="challenge" data-section>
+      <h2 class="section-title">
+        <span class="icon" aria-hidden="true">🔧</span>
+        修复挑战
+      </h2>
+      <div class="card">
+        <p style="margin-top: 0; color: var(--muted);">下面这段 HTML 有嵌套错误。请修改它，让图片和文字都正确显示在一个卡片容器内。</p>
+        <div class="challenge-area">
+          <textarea id="challengeInput" spellcheck="false" aria-label="修复挑战代码编辑器"></textarea>
+        </div>
+        <div class="challenge-actions">
+          <button class="btn" id="checkChallenge">检查答案</button>
+          <button class="btn secondary" id="resetChallenge">重置</button>
+        </div>
+        <div class="challenge-result" id="challengeResult" role="status" aria-live="polite"></div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="container">
+      <p>交互式 HTML 学习示例 · 可用作模板扩展更多主题</p>
+      <p style="font-size: 0.8125rem; margin-top: 0.5rem;">下一步建议：学习 HTML 语义化标签、表单元素，或 CSS 基础。</p>
+    </div>
+  </footer>
+
+  <script>
+    // === 状态 ===
+    const state = {
+      score: 0,
+      answeredQuestions: new Set(),
+      completedSections: new Set()
+    };
+
+    // === 工具函数 ===
+    function debounce(fn, delay) {
+      let timer = null;
+      return function (...args) {
+        clearTimeout(timer);
+        timer = setTimeout(() => fn.apply(this, args), delay);
+      };
+    }
+
+    function escapeHtml(str) {
+      return str
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;');
+    }
+
+    function updateProgress() {
+      const sections = document.querySelectorAll('[data-section]');
+      const total = sections.length;
+      const completed = state.completedSections.size;
+      const percent = Math.round((completed / total) * 100);
+      document.getElementById('progressBar').style.width = percent + '%';
+    }
+
+    function markSectionComplete(id) {
+      state.completedSections.add(id);
+      updateProgress();
+    }
+
+    // === 标签卡片 ===
+    const tags = [
+      { name: 'p', desc: '段落标签', detail: '用于定义一段文本。浏览器会自动在段落前后添加一些空白。', example: '<p>这是一段文字。</p>' },
+      { name: 'h1', desc: '一级标题', detail: '用于定义页面最重要的标题。一个页面通常只应有一个 h1。', example: '<h1>文章标题</h1>' },
+      { name: 'a', desc: '超链接', detail: '用于创建跳转到其他页面或锚点的链接，需要 href 属性。', example: '<a href="https://example.com">点击这里</a>' },
+      { name: 'img', desc: '图片', detail: '用于在页面中嵌入图片，是自闭合标签，需要 src 和 alt 属性。', example: '<img src="photo.jpg" alt="描述文字" />' },
+      { name: 'div', desc: '块级容器', detail: '用于组合其他元素，本身没有特殊语义，是最常用的布局容器。', example: '<div>\n  <p>容器内的段落</p>\n</div>' },
+      { name: 'span', desc: '行内容器', detail: '用于在行内包裹一小段内容，常与 CSS/JS 配合。', example: '<p>这是一段 <span>高亮</span> 文字。</p>' }
+    ];
+
+    function initTagCards() {
+      const grid = document.getElementById('tagGrid');
+      const detail = document.getElementById('tagDetail');
+
+      tags.forEach((tag, index) => {
+        const card = document.createElement('div');
+        card.className = 'tag-card';
+        card.setAttribute('role', 'button');
+        card.setAttribute('tabindex', '0');
+        card.setAttribute('aria-expanded', 'false');
+        card.innerHTML = `
+          <div class="tag-name">&lt;${tag.name}&gt;</div>
+          <div class="tag-desc">${tag.desc}</div>
+        `;
+
+        function activate() {
+          document.querySelectorAll('.tag-card').forEach(c => {
+            c.classList.remove('active');
+            c.setAttribute('aria-expanded', 'false');
+          });
+          card.classList.add('active');
+          card.setAttribute('aria-expanded', 'true');
+
+          detail.innerHTML = `
+            <h3 style="margin-top: 0;">&lt;${tag.name}&gt; — ${tag.desc}</h3>
+            <p>${tag.detail}</p>
+            <p><strong>示例代码：</strong></p>
+            <div class="tag-example">${escapeHtml(tag.example)}</div>
+            <p style="margin-bottom: 0;"><strong>渲染效果：</strong></p>
+            <div style="padding: 0.75rem; background: white; border: 1px solid #cbd5e1; border-radius: 8px; margin-top: 0.5rem;">${tag.example}</div>
+          `;
+          detail.classList.add('show');
+          markSectionComplete('tags');
+        }
+
+        card.addEventListener('click', activate);
+        card.addEventListener('keydown', (e) => {
+          if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault();
+            activate();
+          }
+        });
+
+        grid.appendChild(card);
+      });
+    }
+
+    // === 嵌套实验室 ===
+    const defaultPlaygroundCode = `<div style="padding: 1rem; background: #e0f2fe; border-radius: 8px;">
+  <h2>欢迎来到嵌套实验室</h2>
+  <p>
+    这是一段文字，其中 <strong>这部分加粗</strong>，
+    <a href="#">这是一个链接</a>。
+  </p>
+  <img src="https://via.placeholder.com/120x80/2563eb/ffffff?text=HTML" alt="示例图片" style="border-radius: 6px;" />
+</div>`;
+
+    function initPlayground() {
+      const input = document.getElementById('htmlInput');
+      const preview = document.getElementById('livePreview');
+      const resetBtn = document.getElementById('resetPlayground');
+
+      input.value = defaultPlaygroundCode;
+
+      const updatePreview = debounce(() => {
+        preview.innerHTML = input.value;
+        markSectionComplete('playground');
+      }, 150);
+
+      input.addEventListener('input', updatePreview);
+      updatePreview();
+
+      resetBtn.addEventListener('click', () => {
+        input.value = defaultPlaygroundCode;
+        updatePreview();
+      });
+    }
+
+    // === 常见错误手风琴 ===
+    const mistakes = [
+      {
+        title: '标签没有正确闭合',
+        wrong: '<p>这是一段文字\n<p>这是另一段',
+        right: '<p>这是一段文字</p>\n<p>这是另一段</p>',
+        explain: '每个开标签都需要对应的闭标签（自闭合标签除外），否则浏览器可能无法正确解析结构。'
+      },
+      {
+        title: '块级元素错误地嵌套在行内元素里',
+        wrong: '<span>\n  <div>这是一个块级内容</div>\n</span>',
+        right: '<div>\n  <span>这是一个行内内容</span>\n</div>',
+        explain: '<div> 是块级元素，<span> 是行内元素。块级元素不应放在行内元素内部。'
+      },
+      {
+        title: '标签交叉嵌套',
+        wrong: '<p><strong>加粗开始</p></strong>',
+        right: '<p><strong>加粗开始</strong></p>',
+        explain: '子元素必须在父元素内部完全闭合，不能“交叉”闭合。'
+      }
+    ];
+
+    function initMistakes() {
+      const container = document.getElementById('mistakesAccordion');
+
+      mistakes.forEach((item, index) => {
+        const div = document.createElement('div');
+        div.className = 'accordion-item';
+        div.innerHTML = `
+          <button class="accordion-header" aria-expanded="false" aria-controls="mistake-body-${index}">
+            <span>${item.title}</span>
+            <span class="accordion-icon" aria-hidden="true">▼</span>
+          </button>
+          <div class="accordion-body" id="mistake-body-${index}">
+            <p style="margin-top: 0; color: var(--muted);">${item.explain}</p>
+            <div class="compare-grid">
+              <div class="compare-box wrong">
+                <div class="compare-label">❌ 错误写法</div>
+                <pre style="margin: 0;"><code>${escapeHtml(item.wrong)}</code></pre>
+              </div>
+              <div class="compare-box right">
+                <div class="compare-label">✅ 正确写法</div>
+                <pre style="margin: 0;"><code>${escapeHtml(item.right)}</code></pre>
+              </div>
+            </div>
+          </div>
+        `;
+
+        const header = div.querySelector('.accordion-header');
+        header.addEventListener('click', () => {
+          const isOpen = div.classList.contains('open');
+          container.querySelectorAll('.accordion-item').forEach(i => {
+            i.classList.remove('open');
+            i.querySelector('.accordion-header').setAttribute('aria-expanded', 'false');
+          });
+          if (!isOpen) {
+            div.classList.add('open');
+            header.setAttribute('aria-expanded', 'true');
+            markSectionComplete('mistakes');
+          }
+        });
+
+        container.appendChild(div);
+      });
+    }
+
+    // === 即时测验 ===
+    const quizData = [
+      {
+        question: '下面哪个标签用于定义段落？',
+        options: ['&lt;div&gt;', '&lt;p&gt;', '&lt;span&gt;', '&lt;h1&gt;'],
+        correct: 1,
+        explain: '&lt;p&gt; 是 paragraph（段落）的缩写，专门用于定义段落。'
+      },
+      {
+        question: '以下哪种嵌套方式是正确的？',
+        options: [
+          '&lt;p&gt;&lt;strong&gt;文字&lt;/p&gt;&lt;/strong&gt;',
+          '&lt;span&gt;&lt;div&gt;文字&lt;/div&gt;&lt;/span&gt;',
+          '&lt;div&gt;&lt;p&gt;文字&lt;/p&gt;&lt;/div&gt;',
+          '&lt;p&gt;文字&lt;br&gt;&lt;/p&gt;（&lt;br&gt; 不需要闭标签，这个写法本身可接受，但题目问“嵌套”）'
+        ],
+        correct: 2,
+        explain: '&lt;div&gt; 内嵌套 &lt;p&gt; 是正确的。选项 A 交叉闭合错误；选项 B 把块级元素放在行内元素内，不推荐。'
+      },
+      {
+        question: '&lt;img&gt; 标签为什么不需要闭标签？',
+        options: [
+          '因为它是一个错误设计',
+          '因为它是自闭合标签，本身不包含内容',
+          '因为浏览器会自动补全',
+          '因为图片不是 HTML 元素'
+        ],
+        correct: 1,
+        explain: '&lt;img&gt; 是自闭合标签（void element），它通过属性引入外部资源，不需要包裹内容。'
+      }
+    ];
+
+    function initQuiz() {
+      const container = document.getElementById('quizContainer');
+      const scoreBoard = document.getElementById('scoreBoard');
+
+      function updateScore() {
+        scoreBoard.textContent = `得分：${state.score} / ${quizData.length}`;
+      }
+
+      quizData.forEach((q, qIndex) => {
+        const questionEl = document.createElement('div');
+        questionEl.className = 'question';
+        questionEl.dataset.index = qIndex;
+
+        const optionsHtml = q.options.map((opt, oIndex) => `
+          <div class="option" data-oindex="${oIndex}" role="button" tabindex="0">
+            <span>${String.fromCharCode(65 + oIndex)}.</span>
+            <span>${opt}</span>
+          </div>
+        `).join('');
+
+        questionEl.innerHTML = `
+          <div class="question-text">${qIndex + 1}. ${q.question}</div>
+          <div class="options">${optionsHtml}</div>
+          <div class="feedback" id="feedback-${qIndex}"></div>
+        `;
+
+        const options = questionEl.querySelectorAll('.option');
+        options.forEach(option => {
+          function select() {
+            if (state.answeredQuestions.has(qIndex)) return;
+
+            const oIndex = parseInt(option.dataset.oindex);
+            const isCorrect = oIndex === q.correct;
+
+            options.forEach(o => o.classList.add('disabled'));
+            option.classList.add(isCorrect ? 'correct' : 'wrong');
+
+            if (isCorrect) {
+              state.score++;
+            } else {
+              options[q.correct].classList.add('correct');
+            }
+
+            state.answeredQuestions.add(qIndex);
+            updateScore();
+
+            const feedback = document.getElementById(`feedback-${qIndex}`);
+            feedback.innerHTML = isCorrect
+              ? `<strong style="color: var(--success);">✅ 回答正确！</strong> ${q.explain}`
+              : `<strong style="color: var(--error);">❌ 回答错误。</strong> ${q.explain}`;
+            feedback.classList.add('show');
+
+            if (state.answeredQuestions.size === quizData.length) {
+              markSectionComplete('quiz');
+            }
+          }
+
+          option.addEventListener('click', select);
+          option.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter' || e.key === ' ') {
+              e.preventDefault();
+              select();
+            }
+          });
+        });
+
+        container.appendChild(questionEl);
+      });
+
+      updateScore();
+    }
+
+    // === 修复挑战 ===
+    const defaultChallengeCode = `<div>
+  <h2>我们的产品</h2>
+  <p>了解更多请访问官网。
+</div>
+<img src="https://via.placeholder.com/200x120/2563eb/ffffff?text=Product" alt="产品图">
+<div>`;
+
+    const challengeTarget = `<div>
+  <h2>我们的产品</h2>
+  <p>了解更多请访问官网。</p>
+  <img src="https://via.placeholder.com/200x120/2563eb/ffffff?text=Product" alt="产品图">
+</div>`;
+
+    function normalizeHtml(html) {
+      return html
+        .replace(/<!--[\s\S]*?-->/g, '')
+        .replace(/\s+/g, ' ')
+        .replace(/\s*</g, '<')
+        .replace(/>\s*/g, '>')
+        .trim();
+    }
+
+    function initChallenge() {
+      const input = document.getElementById('challengeInput');
+      const checkBtn = document.getElementById('checkChallenge');
+      const resetBtn = document.getElementById('resetChallenge');
+      const result = document.getElementById('challengeResult');
+
+      input.value = defaultChallengeCode;
+
+      function showResult(message, isSuccess) {
+        result.textContent = message;
+        result.className = 'challenge-result show ' + (isSuccess ? 'success' : 'error');
+        if (isSuccess) {
+          markSectionComplete('challenge');
+        }
+      }
+
+      checkBtn.addEventListener('click', () => {
+        const normalized = normalizeHtml(input.value);
+        const target = normalizeHtml(challengeTarget);
+
+        if (normalized === target) {
+          showResult('🎉 太棒了！标签已正确嵌套并闭合。', true);
+        } else {
+          // 检查几个关键点
+          const hasClosingP = /<\/p>/.test(input.value);
+          const imgInsideDiv = /<div>.*<img[\s\S]*?<\/div>/.test(input.value);
+          const noExtraOpenDiv = (input.value.match(/<div>/g) || []).length <= 1;
+
+          if (!hasClosingP) {
+            showResult('提示：\<p\> 标签还没有正确闭合，请加上 \</p\>。', false);
+          } else if (!imgInsideDiv) {
+            showResult('提示：图片应该放在同一个 \<div\> 容器内部。', false);
+          } else if (!noExtraOpenDiv) {
+            showResult('提示：注意 \<div\> 开标签和闭标签要一一对应。', false);
+          } else {
+            showResult('接近了！请再检查一下标签的嵌套和闭合顺序。', false);
+          }
+        }
+      });
+
+      resetBtn.addEventListener('click', () => {
+        input.value = defaultChallengeCode;
+        result.className = 'challenge-result';
+        result.textContent = '';
+      });
+    }
+
+    // === 滚动监听进度 ===
+    function initScrollProgress() {
+      window.addEventListener('scroll', debounce(() => {
+        const scrollTop = window.scrollY;
+        const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+        const scrollPercent = docHeight > 0 ? (scrollTop / docHeight) * 100 : 0;
+        const currentWidth = parseFloat(document.getElementById('progressBar').style.width) || 0;
+        const newWidth = Math.max(currentWidth, scrollPercent);
+        document.getElementById('progressBar').style.width = newWidth + '%';
+      }, 50));
+    }
+
+    // === 初始化 ===
+    document.addEventListener('DOMContentLoaded', () => {
+      initTagCards();
+      initPlayground();
+      initMistakes();
+      initQuiz();
+      initChallenge();
+      initScrollProgress();
+      updateProgress();
+    });
+  </script>
+</body>
+</html>
