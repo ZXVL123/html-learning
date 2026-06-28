@@ -4,6 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>HTML 标签与嵌套 — 交互式记忆库</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3e🌐%3C/text%3E%3C/svg%3E" />
   <style>
     /* === CSS 变量：柔和的学习调色板 === */
     :root {
@@ -775,11 +776,15 @@
 
     .solution-compare {
       display: none;
-      grid-template-columns: 1fr 1fr;
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
       gap: 14px;
       margin-top: 18px;
+      overflow-x: auto;
     }
     .solution-compare.show { display: grid; }
+    .solution-compare > div {
+      min-width: 0;
+    }
     @media (max-width: 768px) { .solution-compare { grid-template-columns: 1fr; } }
 
     /* === Tooltip === */
@@ -1225,7 +1230,7 @@
       { name: 'p', desc: '段落标签', category: 'block', detail: '用于定义一段文本。浏览器会自动在段落前后添加一些空白。', example: '<p>这是一段文字。</p>' },
       { name: 'h1', desc: '一级标题', category: 'block', detail: '用于定义页面最重要的标题。一个页面通常只应有一个 h1。', example: '<h1>文章标题</h1>' },
       { name: 'a', desc: '超链接', category: 'inline', detail: '用于创建跳转到其他页面或锚点的链接，需要 href 属性。', example: '<a href="https://example.com">点击这里</a>' },
-      { name: 'img', desc: '图片', category: 'media', detail: '用于在页面中嵌入图片，是自闭合标签，需要 src 和 alt 属性。', example: '<img src="photo.jpg" alt="描述文字" />' },
+      { name: 'img', desc: '图片', category: 'media', detail: '用于在页面中嵌入图片，是自闭合标签，需要 src 和 alt 属性。', example: '<img src="https://via.placeholder.com/120x80/2563EB/FFFFFF?text=IMG" alt="描述文字" />' },
       { name: 'div', desc: '块级容器', category: 'container', detail: '用于组合其他元素，本身没有特殊语义，是最常用的布局容器。', example: '<div>\n  <p>容器内的段落</p>\n</div>' },
       { name: 'span', desc: '行内容器', category: 'container', detail: '用于在行内包裹一小段内容，常与 CSS/JS 配合。', example: '<p>这是一段 <span>高亮</span> 文字。</p>' }
     ];
